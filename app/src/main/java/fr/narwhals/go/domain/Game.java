@@ -10,8 +10,6 @@ import java.util.List;
 import fr.narwhals.go.sgf.SgfWriter;
 
 public class Game implements Serializable {
-	private static final long serialVersionUID = 4116863586897789473L;
-
 	public enum Rule {
 		Japanese(6.5), Chinese(7.5);
 		
