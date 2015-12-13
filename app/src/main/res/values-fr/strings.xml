@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Main menu -->
+    <string name="play">Jouer</string>
+    <string name="preferences">Préférences</string>
+    <string name="howToPlay">Règles</string>
+    <!-- Buttons -->
+    <string name="black">Noir</string>
+    <string name="white">Blanc</string>
+    <string name="first">Premier</string>
+    <string name="last">Dernier</string>
+    <string name="previous">Précédent</string>
+    <string name="next">Suivant</string>
+    <string name="pass">Passer</string>
+    <string name="undo">Reprendre</string>
+    <string name="cancel">Annuler</string>
+    <string name="proceed">Valider</string>
+    <string name="give_up">Abandonner</string>
+    <string name="play_again">Rejouer</string>
+    <string name="review">Analyser</string>
+    <!-- New Game -->
+    <string name="ai">IA</string>
+    <string name="black_player">Joueur Noir</string>
+    <string name="white_player">Joueur Blanc</string>
+    <string name="japanese">Japonaise</string>
+    <string name="chinese">Chinoise</string>
+    <string name="handicap">Handicap</string>
+    <string name="rule">Règles</string>
+    <string name="size">Taille</string>
+    <string name="board">Goban</string>
+    <!-- Preferences -->
+    <string name="tag_variations">Étiqueter les variations</string>
+    <string name="number_moves">Numéroter les coups</string>
+    <string name="show_last_move">Marquer le dernier coup</string>
+    <string name="ai_pass">L\'IA passe après le joueur</string>
+    <string name="fullscreen">Plein écran</string>
+    <string name="enable_sound">Son activé</string>
+    <string name="tag_variations_summary">Affiche une lettre pour chaque variation.</string>
+    <string name="number_moves_summary">Affiche le numéro du coup sur chaque pierre.</string>
+    <string name="show_last_move_summary">Le dernier coup joué sera entouré pour plus de visibilité.</string>
+    <string name="ai_pass_summary">L\'IA passe toujours lorsqu\'un joueur passe.</string>
+    <string name="fullscreen_summary">Le jeu sera toujours en plein écran.</string>
+    <string name="enable_sound_summary">Un son sera joué pour chaque pierre posé.</string>
+
+</resources>

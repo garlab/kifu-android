@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Kifu</string>
+    <!-- Main menu -->
+    <string name="play">Play</string>
+    <string name="preferences">Preferences</string>
+    <string name="howToPlay">How to play</string>
+    <!-- Buttons -->
+    <string name="black">Black</string>
+    <string name="white">White</string>
+    <string name="first">First</string>
+    <string name="last">Last</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="pass">Pass</string>
+    <string name="undo">Undo</string>
+    <string name="cancel">Cancel</string>
+    <string name="proceed">Proceed</string>
+    <string name="give_up">Give up</string>
+    <string name="play_again">Play again</string>
+    <string name="review">Review</string>
+    <!-- New Game -->
+    <string name="ai">AI</string>
+    <string name="black_player">Black Player</string>
+    <string name="white_player">White Player</string>
+    <string name="japanese">Japanese</string>
+    <string name="chinese">Chinese</string>
+    <string name="handicap">Handicap</string>
+    <string name="rule">Rule</string>
+    <string name="size">Size</string>
+    <string name="board">Board</string>
+    <!-- Preferences -->
+    <string name="tag_variations">Tag variations</string>
+    <string name="number_moves">Number moves</string>
+    <string name="show_last_move">Show last move</string>
+    <string name="ai_pass">AI pass after player</string>
+    <string name="fullscreen">Full screen</string>
+    <string name="enable_sound">Enable sound</string>
+    <string name="tag_variations_summary">Show a letter for each variation.</string>
+    <string name="number_moves_summary">Show move number on each played stone.</string>
+    <string name="show_last_move_summary">The last move will be enlighted.</string>
+    <string name="ai_pass_summary">AI always pass when player pass.</string>
+    <string name="fullscreen_summary">Always use fullscreen mode.</string>
+    <string name="enable_sound_summary">A sound will be played when a stone is holded.</string>
+
+</resources>

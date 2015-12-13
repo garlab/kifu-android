@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/white"
+            android:src="@drawable/stone_white" />
+
+        <EditText
+            android:id="@+id/player_white"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/white_player" />
+
+        <CheckBox
+            android:id="@+id/ai_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ai" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/black"
+            android:src="@drawable/stone_black" />
+
+        <EditText
+            android:id="@+id/player_black"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/black_player" >
+        </EditText>
+
+        <CheckBox
+            android:id="@+id/ai_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ai" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/size" />
+
+    <RadioGroup
+        android:id="@+id/size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dividerPadding="40dp"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/s9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="9x9" />
+
+        <RadioButton
+            android:id="@+id/s13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="13x13" />
+
+        <RadioButton
+            android:id="@+id/s19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="19x19" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rule" />
+
+    <RadioGroup
+        android:id="@+id/rule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:dividerPadding="40dp"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/japanese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/japanese" />
+
+        <RadioButton
+            android:id="@+id/chinese"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/chinese" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/handicap" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/h_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="minus"
+            android:text="-" />
+
+        <SeekBar
+            android:id="@+id/handicap"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:max="9"
+            android:text="@string/handicap" />
+
+        <Button
+            android:id="@+id/h_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="plus"
+            android:text="+" />
+
+        <TextView
+            android:id="@+id/hvalue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:onClick="play"
+        android:text="@string/play" />
+
+</LinearLayout>

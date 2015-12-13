@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:key="affichage"
+        android:title="Affichage" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="tag_variations"
+            android:summary="@string/tag_variations_summary"
+            android:title="@string/tag_variations" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="number_moves"
+            android:summary="@string/number_moves_summary"
+            android:title="@string/number_moves" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="show_last_move"
+            android:summary="@string/show_last_move_summary"
+            android:title="@string/show_last_move" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="ai_pass"
+            android:summary="@string/ai_pass_summary"
+            android:title="@string/ai_pass" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="fullscreen"
+            android:summary="@string/fullscreen_summary"
+            android:title="@string/fullscreen" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="enable_sound"
+            android:summary="@string/enable_sound_summary"
+            android:title="@string/enable_sound" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

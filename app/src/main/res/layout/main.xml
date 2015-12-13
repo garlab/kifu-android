@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <Button
+        android:layout_width="72pt"
+        android:layout_height="wrap_content"
+        android:layout_margin="1pt"
+        android:background="@drawable/button"
+        android:onClick="play"
+        android:text="@string/play" />
+
+    <Button
+        android:layout_width="72pt"
+        android:layout_height="wrap_content"
+        android:layout_margin="1pt"
+        android:background="@drawable/button"
+        android:onClick="preferences"
+        android:text="@string/preferences" />
+
+    <Button
+        android:layout_width="72pt"
+        android:layout_height="wrap_content"
+        android:layout_margin="1pt"
+        android:background="@drawable/button"
+        android:onClick="howToPlay"
+        android:text="@string/howToPlay" />
+
+</LinearLayout>
