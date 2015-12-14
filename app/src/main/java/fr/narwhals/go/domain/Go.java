@@ -10,8 +10,6 @@ import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.sgf.SgfWriter;
 
 public class Go implements Serializable {
-	private static final long serialVersionUID = 4734009956114570639L;
-	
 	public enum EndOfGame {
 		None, GiveUp, Winner, Jigo, Unknow
 	}

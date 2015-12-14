@@ -69,11 +69,11 @@ public class NewGameActivity extends Activity implements OnSeekBarChangeListener
 		Player[] players = go.players;
 		if (aiBlackView.isChecked()) {
 			int i = SColor.BLACK.ordinal();
-			players[i].setAI(new OffensiveAI(go, players[i]));
+			players[i].setAi(new OffensiveAI(go, players[i]));
 		}
 		if (aiWhiteView.isChecked()) {
 			int i = SColor.WHITE.ordinal();
-			players[i].setAI(new OffensiveAI(go, players[i]));
+			players[i].setAi(new OffensiveAI(go, players[i]));
 		}
 	}
 

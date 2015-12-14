@@ -168,7 +168,7 @@ public class GameActivity extends Activity {
 			go.history.pass();
 			setState(State.Territories);
 		} else {
-			Stone stone = player.getAI().getMove();
+			Stone stone = player.getAi().getMove();
 			if (stone == Stone.PASS) {
 				go.history.pass();
 			} else {
@@ -330,10 +330,6 @@ public class GameActivity extends Activity {
 					if (stone.isMoveValid() && !go.history.getCurrentMove().getKo().equals(point)) {
 						go.history.move(stone);
 						nextRound();
-					} else {
-						if (!go.goban.isLiberty(point)) {
-							go.goban.getStone(point).getStoneGroup().dump();
-						}
 					}
 				}
 				break;

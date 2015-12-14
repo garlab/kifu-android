@@ -9,7 +9,6 @@ import java.util.List;
 import fr.narwhals.go.domain.Section.SColor;
 
 public class Goban implements Serializable {
-	private static final long serialVersionUID = -375837721763991337L;
 	
 	private Section[][] board;
 	private transient List<Territory> territories;

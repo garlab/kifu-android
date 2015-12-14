@@ -38,7 +38,7 @@ public class Stone extends Section {
 	 */
 	public List<Liberty> getLiberties() {
 		List<Liberty> liberties = new ArrayList<Liberty>(4);
-		for (Section neighbor : goban.getNeighbors(getPoint())) {
+		for (Section neighbor : getGoban().getNeighbors(getPoint())) {
 			if (neighbor instanceof Liberty) {
 				liberties.add((Liberty) neighbor);
 			}
@@ -59,7 +59,7 @@ public class Stone extends Section {
 				}
 			}
 		}
-		liberties.remove(goban.getLiberty(getPoint()));
+		liberties.remove(getGoban().getLiberty(getPoint()));
 		return liberties;
 	}
 
@@ -82,7 +82,7 @@ public class Stone extends Section {
 
 	public List<Stone> getSameColorNeighbors() {
 		List<Stone> neighbors = new ArrayList<Stone>(4);
-		for (Section section : goban.getNeighbors(getPoint())) {
+		for (Section section : getGoban().getNeighbors(getPoint())) {
 			if (section instanceof Stone) {
 				Stone neighbor = (Stone) section;
 				if (neighbor.getColor().equals(getColor())) {
@@ -97,7 +97,7 @@ public class Stone extends Section {
 
 	public List<StoneGroup> getSameColorGroupNeighbors() {
 		List<StoneGroup> neighbors = new ArrayList<StoneGroup>(4);
-		for (Section section : goban.getNeighbors(getPoint())) {
+		for (Section section : getGoban().getNeighbors(getPoint())) {
 			if (section instanceof Stone) {
 				Stone neighbor = (Stone) section;
 				if (neighbor.getColor().equals(getColor()) && !neighbors.contains(neighbor.getStoneGroup())) {
@@ -110,7 +110,7 @@ public class Stone extends Section {
 
 	public List<StoneGroup> getGroupNeighbors() {
 		List<StoneGroup> neighbors = new ArrayList<StoneGroup>(4);
-		for (Section section : goban.getNeighbors(getPoint())) {
+		for (Section section : getGoban().getNeighbors(getPoint())) {
 			if (section instanceof Stone) {
 				Stone neighbor = (Stone) section;
 				if (!neighbors.contains(neighbor.getStoneGroup())) {
@@ -150,7 +150,7 @@ public class Stone extends Section {
 	}
 
 	public boolean isMoveValid() {
-		if (!goban.isLiberty(getPoint())) {
+		if (!getGoban().isLiberty(getPoint())) {
 			return false;
 		} else {
 			return getActualNumberOfLiberties() > 0 || getCaptureValue() > 0;
@@ -198,7 +198,7 @@ public class Stone extends Section {
 	 * enemis adjacent, et de capturer ceux dont les libertés == 0
 	 */
 	public void removeNeighborLiberty() {
-		Liberty liberty = goban.getLiberty(getPoint());
+		Liberty liberty = getGoban().getLiberty(getPoint());
 		for (StoneGroup neighbor : getGroupNeighbors()) {
 			if (!neighbor.getColor().equals(getColor())) {
 				neighbor.remove(liberty);
@@ -226,7 +226,7 @@ public class Stone extends Section {
 	 * adjacent du au retrait de la pierre
 	 */
 	public void addNeighborLiberty() {
-		Liberty liberty = new Liberty(SColor.NONE, getPoint(), goban);
+		Liberty liberty = new Liberty(SColor.NONE, getPoint(), getGoban());
 		for (StoneGroup neighbor : getGroupNeighbors()) {
 			neighbor.add(liberty);
 		}

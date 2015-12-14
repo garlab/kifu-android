@@ -13,7 +13,6 @@ import fr.narwhals.go.sgf.SgfWriter;
 import android.util.Log;
 
 public class History implements Serializable {
-	private static final long serialVersionUID = -100782528668167678L;
 
 	private transient Node root;
 	private transient Node current;

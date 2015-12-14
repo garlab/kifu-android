@@ -100,7 +100,6 @@ public class Score implements Serializable {
 	}
 
 	private static class Info implements Serializable {
-		private static final long serialVersionUID = -5586738227752530250L;
 		
 		private int capturedStones = 0;
 		private transient int territories = 0;
