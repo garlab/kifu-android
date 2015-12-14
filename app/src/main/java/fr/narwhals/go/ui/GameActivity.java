@@ -407,18 +407,13 @@ public class GameActivity extends Activity {
 			paint.setColor(Color.BLACK);
 			paint.setStrokeWidth(1);
 
-			for (int i = 0; i < size; ++i) {
-				int v_x1 = screenSize / (2 * size);
-				int v_y1 = screenSize / (2 * size) + i * screenSize / size;
-				int v_x2 = screenSize / (2 * size) + (size - 1) * screenSize / size;
-				int v_y2 = v_y1;
-				canvas.drawLine(v_x1, v_y1, v_x2, v_y2, paint);
+			int b = screenSize / (2 * size);
 
-				int h_x1 = screenSize / (2 * size) + i * screenSize / size;
-				int h_y1 = screenSize / (2 * size);
-				int h_x2 = h_x1;
-				int h_y2 = screenSize / (2 * size) + (size - 1) * screenSize / size;
-				canvas.drawLine(h_x1, h_y1, h_x2, h_y2, paint);
+			for (int i = 0; i < size; ++i) {
+				int v1 = b + i * screenSize / size;
+				int v2 = b + (size - 1) * screenSize / size;
+				canvas.drawLine(b, v1, v2, v1, paint);
+				canvas.drawLine(v1, b, v1, v2, paint);
 			}
 		}
 

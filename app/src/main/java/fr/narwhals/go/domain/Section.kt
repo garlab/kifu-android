@@ -3,7 +3,7 @@ package fr.narwhals.go.domain
 import java.io.Serializable
 
 /* Base commune aux Stones et Liberties */
-open class Section(var color: Section.SColor?, val point: Point?, protected val goban: Goban?) : Serializable {
+open class Section(var color: Section.SColor, val point: Point, protected val goban: Goban?) : Serializable {
 
     enum class SColor {
         BLACK, WHITE, BORDER, SHARED, NONE;
@@ -22,7 +22,7 @@ open class Section(var color: Section.SColor?, val point: Point?, protected val 
     }
 
     val opponentColor: SColor
-        get() = color!!.opponentColor
+        get() = color.opponentColor
 
     fun hasGoban(): Boolean {
         return goban != null
@@ -36,18 +36,15 @@ open class Section(var color: Section.SColor?, val point: Point?, protected val 
         return "[point=$point, color=$color]"
     }
 
-    override fun equals(obj: Any?): Boolean {
-        if (this === obj)
+    override fun equals(other: Any?): Boolean {
+        if (this === other)
             return true
-        if (obj == null)
+        if (other == null)
             return false
-        if (javaClass != obj.javaClass)
+        if (javaClass != other.javaClass)
             return false
-        val other = obj as Section?
-        if (point == null) {
-            if (other!!.point != null)
-                return false
-        } else if (point != other!!.point)
+        val other = other as Section
+        if (point != other.point)
             return false
         return true
     }
