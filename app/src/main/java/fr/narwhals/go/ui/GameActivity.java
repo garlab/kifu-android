@@ -25,6 +25,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import fr.narwhals.go.Config;
 import fr.narwhals.go.R;
 import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.Liberty;
@@ -43,7 +45,7 @@ public class GameActivity extends Activity {
 
 	public final String savedGame = "kifu.ser";
 
-	private SharedPreferences sp;
+	private Config config;
 	private GridView grid;
 	private State state;
 
@@ -67,12 +69,12 @@ public class GameActivity extends Activity {
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		setContentView(R.layout.game);
 
+		this.config = new Config(this);
+
 		Bundle param = getIntent().getExtras();
 		String scheme = getIntent().getScheme();
 
-		this.sp = PreferenceManager.getDefaultSharedPreferences(this);
-
-		if (sp.getBoolean("fullscreen", false)) {
+		if (config.fullscreen()) {
 			int fullscreen = WindowManager.LayoutParams.FLAG_FULLSCREEN;
 			getWindow().setFlags(fullscreen, fullscreen);
 		}
@@ -164,7 +166,7 @@ public class GameActivity extends Activity {
 
 	public void AIMove(Player player) {
 		Stone prev = go.history.getCurrentMove().getStone();
-		if (sp.getBoolean("ai_pass", false) && prev == Stone.PASS) {
+		if (config.aiPass() && prev == Stone.PASS) {
 			go.history.pass();
 			setState(State.Territories);
 		} else {
@@ -363,16 +365,16 @@ public class GameActivity extends Activity {
 					drawCross(currentPoint, go.game.getSize(), canvas);
 					drawStone(currentPoint, go.getCurrentColor(), go.game.getSize(), canvas);
 				}
-				if (sp.getBoolean("show_last_move", true)) {
+				if (config.showLastMove()) {
 					drawHint(move.getStone(), go.game.getSize(), canvas);
 				}
 				List<Stone> stones = go.goban.getStones();
 				drawStones(stones, go.game.getSize(), canvas);
-				if (sp.getBoolean("number_moves", false)) {
+				if (config.numberMoves()) {
 					drawNumbers(stones, go.game.getSize(), canvas);
 				}
 				drawShapes(move, go.game.getSize(), canvas);
-				if (sp.getBoolean("tag_variations", true)) {
+				if (config.tagVariations()) {
 					drawPaths(go.history.getChildren(), go.game.getSize(), canvas);
 				}
 				if (move.getKo() != Point.NO_KO) {
