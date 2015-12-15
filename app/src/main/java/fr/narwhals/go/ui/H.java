@@ -34,8 +34,7 @@ public final class H {
 		Matrix matrix = new Matrix();
 		matrix.postScale((float) width / (float) bm.getWidth(), (float) height / (float) bm.getHeight());
 
-		Bitmap bmResized = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, false);
-		return bmResized;
+		return Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, false);
 	}
 
 	public static void serialize(Serializable object, String filename, Context context) throws IOException {
