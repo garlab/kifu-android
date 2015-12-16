@@ -1,16 +1,23 @@
 package fr.narwhals.go.ui
 
 import android.os.Bundle
-import android.preference.PreferenceActivity
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.preference.PreferenceFragmentCompat
 import fr.narwhals.go.R
 
-class SettingsActivity : PreferenceActivity() {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /*
-            TODO: use Preference fragment,
-            see http://stackoverflow.com/questions/6822319/what-to-use-instead-of-addpreferencesfromresource-in-a-preferenceactivity
-        */
-        addPreferencesFromResource(R.xml.preferences)
+        supportFragmentManager.beginTransaction().replace(android.R.id.content, MyPreferenceFragment()).commit();
+    }
+
+    class MyPreferenceFragment : PreferenceFragmentCompat() {
+        override fun onCreatePreferences(p0: Bundle?, p1: String?) {
+        }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preferences);
+        }
     }
 }

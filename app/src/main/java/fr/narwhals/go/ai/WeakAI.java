@@ -13,7 +13,6 @@ import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.domain.StoneGroup;
 
 public class WeakAI extends AI {
-	private static final long serialVersionUID = -8117514360835226528L;
 
 	public enum Strategy {
 		FUSEKI, NORMAL

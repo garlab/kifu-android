@@ -12,7 +12,6 @@ import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.domain.StoneGroup;
 
 public class OffensiveAI extends AI {
-	private static final long serialVersionUID = -6177700203588599051L;
 
 	public enum Strategy {
 		FUSEKI, NORMAL
