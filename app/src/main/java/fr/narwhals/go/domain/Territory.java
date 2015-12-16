@@ -13,7 +13,7 @@ import fr.narwhals.go.domain.Section.SColor;
 public class Territory implements Serializable {
 
 	private transient List<Liberty> liberties = new ArrayList<Liberty>();
-	private transient List<StoneGroup> stoneGroups = new ArrayList<StoneGroup>();
+	private transient Set<StoneGroup> stoneGroups = new HashSet<>();
 	private transient SColor color = SColor.NONE;
 
 	// Color
@@ -77,7 +77,7 @@ public class Territory implements Serializable {
 	public void findAllLiberties(StoneGroup stoneGroup) {
 		if (!stoneGroups.contains(stoneGroup)) {
 			stoneGroups.add(stoneGroup);
-			stoneGroup.add(this);
+			stoneGroup.getTerritories().add(this);
 		}
 	}
 

@@ -3,37 +3,23 @@ package fr.narwhals.go.domain
 import java.io.Serializable
 import java.util.LinkedList
 
-import android.util.Log
 import fr.narwhals.go.domain.Section.SColor
 
 data class StoneGroup(val stone: Stone) : Serializable {
 
-    private val territories: MutableList<Territory>
-    private val stones: MutableList<Stone>
-    private val liberties: MutableList<Liberty>
+    val territories = LinkedList<Territory>()
+    val stones = LinkedList<Stone>()
+    val liberties = LinkedList<Liberty>()
+
     var isDead = false
         private set
 
     init {
-        this.territories = LinkedList<Territory>()
-        this.stones = LinkedList<Stone>()
-        this.liberties = LinkedList<Liberty>()
         add(stone)
     }
 
-    /**
-     * Appellé par stone Permet d'ajouter les pierres lors d'une capture
-     */
-    fun getStones(): List<Stone> {
-        return stones
-    }
-
-    fun getLiberties(): List<Liberty> {
-        return liberties
-    }
-
     val color: SColor
-        get() = stones[0].color!!
+        get() = stones[0].color
 
     val numberOfLiberties: Int
         get() = liberties.size
@@ -74,18 +60,6 @@ data class StoneGroup(val stone: Stone) : Serializable {
         }
     }
 
-    fun remove(stone: Stone) {
-        stones.remove(stone)
-        refresh()
-    }
-
-    private fun refresh() {
-        liberties.clear()
-        for (stone in getStones()) {
-            add(stone.liberties)
-        }
-    }
-
     fun remove(liberty: Liberty) {
         liberties.remove(liberty)
         if (numberOfLiberties == 0) {
@@ -95,7 +69,7 @@ data class StoneGroup(val stone: Stone) : Serializable {
     }
 
     private fun capture() {
-        for (removed in getStones()) {
+        for (removed in stones) {
             removed.addNeighborLiberty()
         }
         this.isDead = true
@@ -122,17 +96,13 @@ data class StoneGroup(val stone: Stone) : Serializable {
     }
 
     private fun merge(groupToMerge: StoneGroup) {
-        for (stone in groupToMerge.getStones()) {
+        for (stone in groupToMerge.stones) {
             add(stone)
             stone.stoneGroup = this
         }
     }
 
     // Territory
-
-    fun add(territory: Territory) {
-        territories.add(territory)
-    }
 
     fun mark() {
         val opponent = color.opponentColor

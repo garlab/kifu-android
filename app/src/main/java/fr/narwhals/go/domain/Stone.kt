@@ -39,7 +39,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
         get() {
             val liberties = liberties
             for (neighbor in sameColorGroupNeighbors) {
-                for (liberty in neighbor.getLiberties()) {
+                for (liberty in neighbor.liberties) {
                     if (!liberties.contains(liberty)) {
                         liberties.add(liberty)
                     }
@@ -56,7 +56,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
         get() {
             val liberties = LinkedList<Liberty>()
             for (neighbor in sameColorGroupNeighbors) {
-                for (liberty in neighbor.getLiberties()) {
+                for (liberty in neighbor.liberties) {
                     if (!liberties.contains(liberty)) {
                         liberties.add(liberty)
                     }
@@ -172,7 +172,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
             if (neighbor.color != color) {
                 neighbor.remove(liberty)
                 if (neighbor.numberOfLiberties == 0) {
-                    capturedStones.addAll(neighbor.getStones())
+                    capturedStones.addAll(neighbor.stones)
                 }
             }
         }

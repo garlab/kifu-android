@@ -2,8 +2,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory
-        android:key="affichage"
-        android:title="Affichage" >
+        android:key="display"
+        android:title="@string/display" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="tag_variations"

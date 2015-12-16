@@ -30,6 +30,7 @@
     <string name="size">Taille</string>
     <string name="board">Goban</string>
     <!-- Preferences -->
+    <string name="display">Affichage</string>
     <string name="tag_variations">Étiqueter les variations</string>
     <string name="number_moves">Numéroter les coups</string>
     <string name="show_last_move">Marquer le dernier coup</string>

@@ -478,7 +478,7 @@ public class GameActivity extends Activity {
 
 		private void drawNumber(Stone stone, int size, Canvas canvas) {
 			String round = String.valueOf(stone.getRound());
-			paint.setColor(stone.getColor() == SColor.BLACK ? Color.BLACK : Color.WHITE);
+			paint.setColor(stone.getColor() == SColor.BLACK ? Color.WHITE : Color.BLACK);
 			paint.setStyle(Style.FILL);
 			paint.setStrokeWidth(1);
 			drawLabel(stone.getPoint(), round, size, canvas);
