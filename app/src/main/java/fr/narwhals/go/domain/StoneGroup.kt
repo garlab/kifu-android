@@ -21,15 +21,9 @@ data class StoneGroup(val stone: Stone) : Serializable {
     val color: SColor
         get() = stones[0].color
 
-    val numberOfLiberties: Int
-        get() = liberties.size
-
     fun hasLiberty(liberty: Liberty): Boolean {
         return liberties.contains(liberty)
     }
-
-    val numberOfStones: Int
-        get() = stones.size
 
     fun getLibertiesAdded(stone: Stone): Int {
         var numberOfLibertiesAdded = -1
@@ -54,6 +48,7 @@ data class StoneGroup(val stone: Stone) : Serializable {
         }
     }
 
+    // TODO: replace liberties by a set and remove this
     fun add(liberty: Liberty) {
         if (!liberties.contains(liberty)) {
             liberties.add(liberty)
@@ -62,9 +57,8 @@ data class StoneGroup(val stone: Stone) : Serializable {
 
     fun remove(liberty: Liberty) {
         liberties.remove(liberty)
-        if (numberOfLiberties == 0) {
+        if (liberties.size == 0) {
             capture()
-            liberties.clear()
         }
     }
 

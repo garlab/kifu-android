@@ -81,9 +81,9 @@ public class Score implements Serializable {
 		for (StoneGroup stoneGroup : stoneGroups) {
 			int i = stoneGroup.getColor().ordinal();
 			if (stoneGroup.isDead()) {
-				infos[i].markedDead += stoneGroup.getNumberOfStones();
+				infos[i].markedDead += stoneGroup.getStones().size();
 			} else {
-				infos[i].stones += stoneGroup.getNumberOfStones();
+				infos[i].stones += stoneGroup.getStones().size();
 			}
 		}
 	}

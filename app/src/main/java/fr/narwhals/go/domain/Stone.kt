@@ -114,13 +114,14 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
         get() {
             var value = 0
             for (neighbor in groupNeighbors) {
-                if (neighbor.color == opponentColor && neighbor.numberOfLiberties == 1) {
-                    value += neighbor.numberOfStones
+                if (neighbor.color == opponentColor && neighbor.liberties.size == 1) {
+                    value += neighbor.stones.size
                 }
             }
             return value
         }
 
+    // TODO: remove these three methods
     val numberOfLiberties: Int
         get() = liberties.size
 
@@ -131,7 +132,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
         get() = actualNeighborLiberties.size
 
     val isPotentialKo: Boolean
-        get() = stoneGroup!!.numberOfStones == 1 && numberOfLiberties == 1
+        get() = stoneGroup!!.stones.size == 1 && numberOfLiberties == 1
 
     val isMoveValid: Boolean
         get() {
@@ -171,7 +172,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
         for (neighbor in groupNeighbors) {
             if (neighbor.color != color) {
                 neighbor.remove(liberty)
-                if (neighbor.numberOfLiberties == 0) {
+                if (neighbor.liberties.size == 0) {
                     capturedStones.addAll(neighbor.stones)
                 }
             }

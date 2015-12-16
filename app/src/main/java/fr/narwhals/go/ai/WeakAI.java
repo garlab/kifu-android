@@ -130,19 +130,19 @@ public class WeakAI extends AI {
 
 				if (groupNeighbor.getColor() == stone.getColor()) {
 
-					if (actualNumberOfLiberties > groupNeighbor.getNumberOfLiberties()) {
+					if (actualNumberOfLiberties > groupNeighbor.getLiberties().size()) {
 						int numberOfLibertiesAdded = groupNeighbor.getLibertiesAdded(stone);
 						totalNumberOfLibertiesAdded += numberOfLibertiesAdded;
-						saveValue += (double) (groupNeighbor.getNumberOfStones() * 2 * numberOfLibertiesAdded)
-								/ (double) groupNeighbor.getNumberOfLiberties();
+						saveValue += (double) (groupNeighbor.getStones().size() * 2 * numberOfLibertiesAdded)
+								/ (double) groupNeighbor.getLiberties().size();
 
 					} else if (actualNumberOfLiberties == 1) {
 						libertyValue = -2;
 					}
 				} else if (groupNeighbor.getColor() == stone.getOpponentColor()) {
-					if (actualNumberOfLiberties != 1 || groupNeighbor.getNumberOfLiberties() == 1) {
-						captureValue += (double) (groupNeighbor.getNumberOfStones() * 2)
-								/ (double) groupNeighbor.getNumberOfLiberties();
+					if (actualNumberOfLiberties != 1 || groupNeighbor.getLiberties().size() == 1) {
+						captureValue += (double) (groupNeighbor.getStones().size() * 2)
+								/ (double) groupNeighbor.getLiberties().size();
 					}
 				}
 			}

@@ -124,18 +124,18 @@ public class OffensiveAI extends AI {
 
 			for (StoneGroup groupNeighbor : stone.getGroupNeighbors()) {
 				if (groupNeighbor.getColor() == stone.getColor()) {
-					if (groupNeighbor.getNumberOfLiberties() == 1 && actualNumberOfLiberties > 1) {
-						this.saveValue += groupNeighbor.getNumberOfStones();
-						this.territoryValue += groupNeighbor.getNumberOfStones();
+					if (groupNeighbor.getLiberties().size() == 1 && actualNumberOfLiberties > 1) {
+						this.saveValue += groupNeighbor.getStones().size();
+						this.territoryValue += groupNeighbor.getStones().size();
 					}
 				} else if (groupNeighbor.getColor() == stone.getOpponentColor()) {
-					if (groupNeighbor.getNumberOfLiberties() == 1) {
-						this.captureValue += (double) (groupNeighbor.getNumberOfStones());
-						this.territoryValue += groupNeighbor.getNumberOfStones();
+					if (groupNeighbor.getLiberties().size() == 1) {
+						this.captureValue += (double) (groupNeighbor.getStones().size());
+						this.territoryValue += groupNeighbor.getStones().size();
 					} else {
 						if (actualNumberOfLiberties > 1) {
-							this.libertyReduced = (double) ((double) (groupNeighbor.getNumberOfStones() * 2) / (double) (groupNeighbor
-									.getNumberOfLiberties() - 1));
+							this.libertyReduced = (double) ((double) (groupNeighbor.getStones().size() * 2) / (double) (groupNeighbor
+									.getLiberties().size() - 1));
 						}
 					}
 				}
