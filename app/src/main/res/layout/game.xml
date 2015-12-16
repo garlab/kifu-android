@@ -140,21 +140,18 @@
         <Button
             android:id="@+id/undo"
             style="@style/buttonStyle"
-            android:layout_margin="4dp"
             android:onClick="undo"
             android:text="@string/undo" />
 
         <Button
             android:id="@+id/pass"
             style="@style/buttonStyle"
-            android:layout_margin="4dp"
             android:onClick="pass"
             android:text="@string/pass" />
 
         <Button
             android:id="@+id/give_up"
             style="@style/buttonStyle"
-            android:layout_margin="4dp"
             android:onClick="giveUp"
             android:text="@string/give_up" />
     </LinearLayout>
@@ -170,14 +167,12 @@
         <Button
             android:id="@+id/cancel"
             style="@style/buttonStyle"
-            android:layout_margin="4dp"
             android:onClick="cancel"
             android:text="@string/cancel" />
 
         <Button
             android:id="@+id/proceed"
             style="@style/buttonStyle"
-            android:layout_margin="4dp"
             android:onClick="proceed"
             android:text="@string/proceed" />
     </LinearLayout>
@@ -193,14 +188,12 @@
         <Button
             android:id="@+id/review"
             style="@style/buttonStyle"
-            android:layout_margin="4dp"
             android:onClick="review"
             android:text="@string/review" />
 
         <Button
             android:id="@+id/play_again"
             style="@style/buttonStyle"
-            android:layout_margin="4dp"
             android:onClick="playAgain"
             android:text="@string/play_again" />
     </LinearLayout>

@@ -2,24 +2,19 @@ package fr.narwhals.go.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 import fr.narwhals.go.domain.Section.SColor;
 
 public class Territory implements Serializable {
-	private static final long serialVersionUID = 5283424520329301912L;
 
-	private transient List<Liberty> liberties;
-	private transient List<StoneGroup> stoneGroups;
-	private transient SColor color;
-	private final Goban goban;
-
-	Territory(Goban goban) {
-		this.color = SColor.NONE;
-		this.liberties = new ArrayList<Liberty>();
-		this.stoneGroups = new ArrayList<StoneGroup>();
-		this.goban = goban;
-	}
+	private transient List<Liberty> liberties = new ArrayList<Liberty>();
+	private transient List<StoneGroup> stoneGroups = new ArrayList<StoneGroup>();
+	private transient SColor color = SColor.NONE;
 
 	// Color
 
@@ -48,32 +43,38 @@ public class Territory implements Serializable {
 		return liberties;
 	}
 
-	/*
-	 * TODO: Dégager ça et le rendre itératif (cf rapport de bug) La stack pete
-	 * sur 19x19 Faire une itération sur tous les pierres, regarder que les
-	 * neighbor à chaque fois, et faire des merges
+	/**
+     * Find all connected liberties, starting from the given first liberty.
+     * Each connected liberties are traversed using a BFS.
 	 */
+	public void findAllLiberties(Goban goban, Liberty first) {
+        Set<Liberty> visited = new HashSet<>();
+        Queue<Liberty> queue = new LinkedList<>();
+        queue.add(first);
 
-	public void add(Liberty liberty) {
-		liberty.setTerritory(this);
-		liberties.add(liberty);
-		for (Section section : goban.getNeighbors(liberty.getPoint())) {
-			if (section instanceof Liberty) {
-				Liberty neighbor = (Liberty) section;
-				if (!neighbor.hasTerritory()) {
-					add(neighbor);
-				}
-			} else if (section instanceof Stone) {
-				Stone stone = (Stone) section;
-				addColor(stone.getColor());
-				add(stone.getStoneGroup());
-			}
-		}
+        while (!queue.isEmpty()) {
+            Liberty liberty = queue.remove();
+            liberty.setTerritory(this);
+            liberties.add(liberty);
+            for (Section section : goban.getNeighbors(liberty.getPoint())) {
+                if (section instanceof Liberty) {
+                    Liberty neighbor = (Liberty) section;
+                    if (!visited.contains(neighbor)) {
+                        visited.add(neighbor);
+                        queue.add(neighbor);
+                    }
+                } else if (section instanceof Stone) {
+                    Stone stone = (Stone) section;
+                    addColor(stone.getColor());
+                    findAllLiberties(stone.getStoneGroup());
+                }
+            }
+        }
 	}
 
 	// StoneGroup
 
-	public void add(StoneGroup stoneGroup) {
+	public void findAllLiberties(StoneGroup stoneGroup) {
 		if (!stoneGroups.contains(stoneGroup)) {
 			stoneGroups.add(stoneGroup);
 			stoneGroup.add(this);

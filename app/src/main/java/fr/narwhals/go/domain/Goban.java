@@ -143,8 +143,8 @@ public class Goban implements Serializable {
 		this.territories = new LinkedList<Territory>();
 		for (Liberty liberty : getAllLiberties()) {
 			if (!liberty.hasTerritory()) {
-				Territory territory = new Territory(this);
-				territory.add(liberty);
+				Territory territory = new Territory();
+				territory.findAllLiberties(this, liberty);
 				territories.add(territory);
 			}
 		}
