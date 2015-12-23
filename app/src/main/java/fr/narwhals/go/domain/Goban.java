@@ -122,6 +122,7 @@ public class Goban implements Serializable {
 	}
 	
 	private void computeStoneGroups() {
+		// TODO replace by a Set
 		stoneGroups = new ArrayList<StoneGroup>();
 		for (Stone stone : getStones()) {
 			if (!stoneGroups.contains(stone.getStoneGroup())) {

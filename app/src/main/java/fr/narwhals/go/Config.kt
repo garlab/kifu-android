@@ -23,6 +23,6 @@ class Config(context: Context) {
     }
 
     fun aiPass(): Boolean {
-        return sp.getBoolean("ai_pass", false)
+        return sp.getBoolean("ai_pass", true)
     }
 }

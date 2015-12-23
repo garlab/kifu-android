@@ -256,7 +256,6 @@ public class GameActivity extends Activity {
 
 	}
 
-	@SuppressWarnings("deprecation")
 	private int getScreenSize() {
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 		int height = getWindowManager().getDefaultDisplay().getHeight();
@@ -271,7 +270,8 @@ public class GameActivity extends Activity {
 		private final int shapeSize;
 		private final int libertySize;
 		
-		private final int crossColor = Color.rgb(200, 0, 0);
+		private final int crossColorValid = Color.rgb(0, 0, 200);
+		private final int crossColorInvalid = Color.rgb(200, 0, 0);
 		private final int textColor = Color.rgb(60, 44, 23); // 3C2C17
 		private final int koColor = Color.rgb(200, 110, 15);
 
@@ -360,7 +360,7 @@ public class GameActivity extends Activity {
 				drawGrids(go.game.getSize(), canvas);
 				drawHoshis(go.game.getHoshis(), go.game.getSize(), canvas);
 				if (currentPoint != null) {
-					drawCross(currentPoint, go.game.getSize(), canvas);
+					drawCross(currentPoint, go.game.getSize(), crossColorInvalid, canvas);
 					drawStone(currentPoint, go.getCurrentColor(), go.game.getSize(), canvas);
 				}
 				if (config.showLastMove()) {
@@ -369,6 +369,7 @@ public class GameActivity extends Activity {
 				List<Stone> stones = go.goban.getStones();
 				drawStones(stones, go.game.getSize(), canvas);
 				if (config.numberMoves()) {
+                    // TODO use history insteadm and remove the round property in stone
 					drawNumbers(stones, go.game.getSize(), canvas);
 				}
 				drawShapes(move, go.game.getSize(), canvas);
@@ -431,8 +432,8 @@ public class GameActivity extends Activity {
 			}
 		}
 
-		private void drawCross(Point point, int size, Canvas canvas) {
-			paint.setColor(crossColor);
+		private void drawCross(Point point, int size, int color, Canvas canvas) {
+			paint.setColor(color);
 			paint.setStrokeWidth(5);
 
 			int v_x1 = screenSize / (2 * size);
@@ -541,7 +542,7 @@ public class GameActivity extends Activity {
 				int top = (coord.getY() - 1) * screenSize / size + (sectionSize) / 2;
 
 				paint.setStrokeWidth(4);
-				paint.setColor(crossColor);
+				paint.setColor(crossColorInvalid);
 
 				canvas.drawCircle(left, top, sectionSize / 2 + 4, paint);
 			}
@@ -555,7 +556,7 @@ public class GameActivity extends Activity {
 			passButton.setTextColor(textColor);
 			for (Stone stone : stones) {
 				if (stone == Stone.PASS) {
-					passButton.setTextColor(crossColor);
+					passButton.setTextColor(crossColorInvalid);
 				} else {
 					drawPath(stone.getPoint(), String.valueOf(label), size, canvas);
 					label++;

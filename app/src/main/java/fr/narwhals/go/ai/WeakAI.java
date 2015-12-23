@@ -124,7 +124,7 @@ public class WeakAI extends AI {
 
 		public void compute() {
 			int totalNumberOfLibertiesAdded = 0;
-			int actualNumberOfLiberties = stone.getActualNumberOfLiberties();
+			int actualNumberOfLiberties = stone.getActualLiberties().size();
 
 			for (StoneGroup groupNeighbor : stone.getGroupNeighbors()) {
 

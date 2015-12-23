@@ -97,7 +97,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
 
     val groupNeighbors: List<StoneGroup>
         get() {
-            val neighbors = ArrayList<StoneGroup>(4)
+            val neighbors = ArrayList<StoneGroup>(4) //TODO replace by a Set
             for (section in goban!!.getNeighbors(point)) {
                 if (section is Stone) {
                     if (!neighbors.contains(section.stoneGroup)) {
@@ -121,25 +121,15 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
             return value
         }
 
-    // TODO: remove these three methods
-    val numberOfLiberties: Int
-        get() = liberties.size
-
-    val actualNumberOfLiberties: Int
-        get() = actualLiberties.size
-
-    val actualNumberOfNeighborLiberties: Int
-        get() = actualNeighborLiberties.size
-
     val isPotentialKo: Boolean
-        get() = stoneGroup!!.stones.size == 1 && numberOfLiberties == 1
+        get() = stoneGroup!!.stones.size == 1 && liberties.size == 1
 
     val isMoveValid: Boolean
         get() {
             if (!goban!!.isLiberty(point)) {
                 return false
             } else {
-                return actualNumberOfLiberties > 0 || captureValue > 0
+                return actualLiberties.size > 0 || captureValue > 0
             }
         }
 

@@ -247,7 +247,6 @@ public class History implements Serializable {
 	}
 
 	private static class Node implements Serializable {
-		private static final long serialVersionUID = -7938261636193798354L;
 		private transient Node parent;
 		private final int level;
 		private transient List<Node> children = new ArrayList<Node>();

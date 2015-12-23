@@ -117,8 +117,8 @@ public class OffensiveAI extends AI {
 		}
 
 		public void compute() {
-			int actualNumberOfLiberties = stone.getActualNumberOfLiberties();
-			int actualNeighborLiberties = stone.getActualNumberOfNeighborLiberties();
+			int actualNumberOfLiberties = stone.getActualLiberties().size();
+			int actualNeighborLiberties = stone.getActualNeighborLiberties().size();
 
 			libertyValue = (double) (actualNumberOfLiberties - actualNeighborLiberties) / 8;
 
