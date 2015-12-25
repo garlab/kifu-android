@@ -43,7 +43,6 @@ public class WeakAI extends AI {
 	@Override
 	public Stone getMove() {
 		Stone stone = null;
-		Log.d("Strategy", this.strategy.toString());
 		switch (strategy) {
 		case FUSEKI:
 			Point corner = getBestCorner();
@@ -56,7 +55,6 @@ public class WeakAI extends AI {
 			break;
 		case NORMAL:
 			Value move = getMax();
-			Log.e("WeakAI", move.toString());
 			stone = move.stone;
 			break;
 		default:
@@ -117,9 +115,6 @@ public class WeakAI extends AI {
 		public Value(Stone stone) {
 			this.stone = stone;
 			compute();
-			if (getSum() > 0) {
-				Log.i(stone.getPoint().toString(), toString());
-			}
 		}
 
 		public void compute() {

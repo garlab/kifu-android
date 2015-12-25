@@ -14,123 +14,102 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import fr.narwhals.go.R;
-import fr.narwhals.go.ai.OffensiveAI;
-import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.Game.Rule;
-import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Section.SColor;
 
 public class NewGameActivity extends Activity implements OnSeekBarChangeListener {
 
-	private SeekBar handicapView;
-	private RadioGroup sizeView;
-	private RadioGroup ruleView;
-	private TextView h_value;
-	private EditText whiteView;
-	private EditText blackView;
-	private CheckBox aiBlackView;
-	private CheckBox aiWhiteView;
+    private SeekBar handicapView;
+    private RadioGroup sizeView;
+    private RadioGroup ruleView;
+    private TextView h_value;
+    private EditText whiteView;
+    private EditText blackView;
+    private CheckBox aiBlackView;
+    private CheckBox aiWhiteView;
 
-	public final static int[] sizes = { 9, 13, 19 };
+    public final static int[] sizes = { 9, 13, 19 };
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		setContentView(R.layout.new_game);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setContentView(R.layout.new_game);
 
-		handicapView = (SeekBar) findViewById(R.id.handicap);
-		sizeView = (RadioGroup) findViewById(R.id.size);
-		ruleView = (RadioGroup) findViewById(R.id.rule);
-		h_value = (TextView) findViewById(R.id.hvalue);
-		whiteView = (EditText) findViewById(R.id.player_white);
-		blackView = (EditText) findViewById(R.id.player_black);
-		aiBlackView = (CheckBox) findViewById(R.id.ai_black);
-		aiWhiteView = (CheckBox) findViewById(R.id.ai_white);
+        handicapView = (SeekBar) findViewById(R.id.handicap);
+        sizeView = (RadioGroup) findViewById(R.id.size);
+        ruleView = (RadioGroup) findViewById(R.id.rule);
+        h_value = (TextView) findViewById(R.id.hvalue);
+        whiteView = (EditText) findViewById(R.id.player_white);
+        blackView = (EditText) findViewById(R.id.player_black);
+        aiBlackView = (CheckBox) findViewById(R.id.ai_black);
+        aiWhiteView = (CheckBox) findViewById(R.id.ai_white);
 
-		h_value.setText(String.valueOf(handicapView.getProgress()));
-		handicapView.setOnSeekBarChangeListener(this);
-	}
+        h_value.setText(String.valueOf(handicapView.getProgress()));
+        handicapView.setOnSeekBarChangeListener(this);
+    }
 
-	public void play(View v) {
-		Game game = new Game(getSize(), getHandicap(), getRule());
-		Player[] players = getPlayers(game.getHandicap());
-		Go go = new Go(game, players);
-		addAI(go);
+    public void play(View v) {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("size", getSize());
+        intent.putExtra("handicap", getHandicap());
+        intent.putExtra("rule", getRule());
 
-		Intent intent = new Intent(this, GameActivity.class);
-		intent.putExtra("go", go);
-		startActivity(intent);
-	}
+        intent.putExtra("blackPlayer", getPlayer(SColor.BLACK,
+                blackView.getText().toString(),
+                getString(R.string.black),
+                aiBlackView.isChecked()
+        ));
 
-	public void addAI(Go go) {
-		Player[] players = go.players;
-		if (aiBlackView.isChecked()) {
-			int i = SColor.BLACK.ordinal();
-			players[i].setAi(new OffensiveAI(go, players[i]));
-		}
-		if (aiWhiteView.isChecked()) {
-			int i = SColor.WHITE.ordinal();
-			players[i].setAi(new OffensiveAI(go, players[i]));
-		}
-	}
+        intent.putExtra("whitePlayer", getPlayer(SColor.WHITE,
+                whiteView.getText().toString(),
+                getString(R.string.white),
+                aiWhiteView.isChecked()
+        ));
 
-	public Player[] getPlayers(int handicap) {
+        startActivity(intent);
+    }
 
-		String whiteName = whiteView.getText().toString();
-		String blackName = blackView.getText().toString();
+    private Player getPlayer(SColor color, String name, String defaultName, boolean ai) {
+        return new Player(color, name.equals("") ? defaultName : name, ai);
+    }
 
-		if (whiteName.equals("")) {
-			whiteName = getString(R.string.white);
-		}
+    public int getHandicap() {
+        return handicapView.getProgress();
+    }
 
-		if (blackName.equals("")) {
-			blackName = getString(R.string.black);
-		}
+    public Rule getRule() {
+        RadioButton rb = (RadioButton) findViewById(ruleView.getCheckedRadioButtonId());
+        return rb.getId() == R.id.japanese ? Rule.Japanese : Rule.Chinese;
+    }
 
-		Player[] players = new Player[2];
-		players[SColor.BLACK.ordinal()] = new Player(SColor.BLACK, blackName);
-		players[SColor.WHITE.ordinal()] = new Player(SColor.WHITE, whiteName);
+    public int getSize() {
+        int sizeId = sizeView.indexOfChild(findViewById(sizeView.getCheckedRadioButtonId()));
+        return sizes[sizeId];
+    }
 
-		return players;
-	}
+    public void plus(View v) {
+        handicapView.setProgress(handicapView.getProgress() + 1);
+        h_value.setText(String.valueOf(handicapView.getProgress()));
+    }
 
-	public int getHandicap() {
-		return handicapView.getProgress();
-	}
+    public void minus(View v) {
+        handicapView.setProgress(handicapView.getProgress() - 1);
+        h_value.setText(String.valueOf(handicapView.getProgress()));
+    }
 
-	public Rule getRule() {
-		RadioButton rb = (RadioButton) findViewById(ruleView.getCheckedRadioButtonId());
-		return rb.getId() == R.id.japanese ? Rule.Japanese : Rule.Chinese;
-	}
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+    }
 
-	public int getSize() {
-		int sizeId = sizeView.indexOfChild(findViewById(sizeView.getCheckedRadioButtonId()));
-		return sizes[sizeId];
-	}
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+    }
 
-	public void plus(View v) {
-		handicapView.setProgress(handicapView.getProgress() + 1);
-		h_value.setText(String.valueOf(handicapView.getProgress()));
-	}
-
-	public void minus(View v) {
-		handicapView.setProgress(handicapView.getProgress() - 1);
-		h_value.setText(String.valueOf(handicapView.getProgress()));
-	}
-
-	@Override
-	public void onStopTrackingTouch(SeekBar seekBar) {
-	}
-
-	@Override
-	public void onStartTrackingTouch(SeekBar seekBar) {
-	}
-
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		h_value.setText(String.valueOf(handicapView.getProgress()));
-	}
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        h_value.setText(String.valueOf(handicapView.getProgress()));
+    }
 }

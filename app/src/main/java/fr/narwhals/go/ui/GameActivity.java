@@ -26,6 +26,9 @@ import android.widget.Toast;
 
 import fr.narwhals.go.Config;
 import fr.narwhals.go.R;
+import fr.narwhals.go.ai.AI;
+import fr.narwhals.go.ai.OffensiveAI;
+import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.Liberty;
 import fr.narwhals.go.domain.Move;
@@ -60,6 +63,33 @@ public class GameActivity extends Activity {
 	private final TextView[] scoresView = new TextView[2];
 	private final LinearLayout[] barsView = new LinearLayout[State.values().length];
 
+    private final AI bots[] = new AI[2];
+
+    private void initBots(Player[] players) {
+        if (players[0].getAi()) {
+            bots[0] = new OffensiveAI(go, players[0]);
+        }
+        if (players[1].getAi()) {
+            bots[1] = new OffensiveAI(go, players[1]);
+        }
+    }
+
+    private void initGo() {
+        Bundle extras = getIntent().getExtras();
+
+        int size = extras.getInt("size");
+        int handicap = extras.getInt("handicap");
+        Game.Rule rule = (Game.Rule) extras.getSerializable("rule");
+        Player blackPlayer = (Player) extras.getSerializable("blackPlayer");
+        Player whitePlayer = (Player) extras.getSerializable("whitePlayer");
+
+        Player[] players = { blackPlayer, whitePlayer };
+        Game game = new Game(size, handicap, rule);
+
+        this.go = new Go(game, players);
+        initBots(players);
+    }
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,7 +99,6 @@ public class GameActivity extends Activity {
 
 		this.config = new Config(this);
 
-		Bundle param = getIntent().getExtras();
 		String scheme = getIntent().getScheme();
 
 		if (config.fullscreen()) {
@@ -86,8 +115,7 @@ public class GameActivity extends Activity {
 			 * this.go = (Go) param.getSerializable("go");
 			 * Log.i(getClass().getName(), "Go was get by param"); }//
 			 */
-			this.go = (Go) param.getSerializable("go");
-
+			initGo();
 		} else {
 			Log.i(getClass().getName(), "Go was get from scheme");
 			// TODO: Ouvrir fichiers sgf
@@ -162,13 +190,13 @@ public class GameActivity extends Activity {
 		grid.invalidate();
 	}
 
-	public void AIMove(Player player) {
+	private void botMove() {
 		Stone prev = go.history.getCurrentMove().getStone();
 		if (config.aiPass() && prev == Stone.PASS) {
 			go.history.pass();
 			setState(State.Territories);
 		} else {
-			Stone stone = player.getAi().getMove();
+			Stone stone = bots[go.getCurrentColor().ordinal()].getMove();
 			if (stone == Stone.PASS) {
 				go.history.pass();
 			} else {
@@ -180,8 +208,8 @@ public class GameActivity extends Activity {
 	public void nextRound() {
 		while (getState() == State.OnGoing) {
 			Player player = go.getCurrentPlayer();
-			if (player.isAI()) {
-				AIMove(player);
+			if (player.getAi()) {
+				botMove();
 				grid.invalidate();
 			} else {
 				return;
@@ -369,7 +397,7 @@ public class GameActivity extends Activity {
 				List<Stone> stones = go.goban.getStones();
 				drawStones(stones, go.game.getSize(), canvas);
 				if (config.numberMoves()) {
-                    // TODO use history insteadm and remove the round property in stone
+                    // TODO use history instead and remove the round property in stone
 					drawNumbers(stones, go.game.getSize(), canvas);
 				}
 				drawShapes(move, go.game.getSize(), canvas);

@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import fr.narwhals.go.sgf.SgfWriter;
-
 public class Game implements Serializable {
 	public enum Rule {
 		Japanese(6.5), Chinese(7.5);
@@ -24,35 +22,29 @@ public class Game implements Serializable {
 		Byoyomi, Canadian, Absolute
 	}
 
-	private int size; // SZ
-	private int time; // TM
-	private Rule rule; // RU
+	private int size;
+	private int time;
+	private Rule rule;
 
-	private String name; // GN
-	private List<String> dates = new LinkedList<String>(); // DT
-	private String copyright = "GPL"; // CP
-	private String comment; // GC
-	private String event; // EV
-	private String round; // RO
-	private String place; // PC
-	private String source; // SO
-	private String annotation; // AN
-	private String user; // US
+	private String name;
+	private List<String> dates = new LinkedList<String>();
+	private String copyright;
+	private String comment;
+	private String event;
+	private String round;
+	private String place;
+	private String source;
+	private String annotation;
+	private String user;
 
 	private Point[] hoshis;
-	private Point[] handicaps; // HA
+	private Point[] handicaps;
 	
 	public Game(int size, int handicap, Rule rule) {
 		setSize(size);
 		setHandicap(handicap);
 		setRule(rule);
 		this.dates.add(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-	}
-	
-	public void toSgf(SgfWriter writer) throws IOException {
-		writer.write("SZ", size);
-		writer.write("RU", rule.toString());
-		writer.write("HA", handicaps);
 	}
 
 	public int getSize() {
