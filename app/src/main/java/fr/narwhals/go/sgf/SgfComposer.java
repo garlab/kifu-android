@@ -1,5 +1,10 @@
 package fr.narwhals.go.sgf;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.History;
@@ -62,6 +67,14 @@ public class SgfComposer {
         }
     }
 
+    private void append(String key, List<Date> dates) {
+        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        sb.append(key);
+        for (Date date : dates) {
+            sb.append(String.format("[%s]", fmt.format(date)));
+        }
+    }
+
     private void append(Stone stone) {
         append(stone.getColor().getKey(), stone.getPoint());
     }
@@ -84,8 +97,9 @@ public class SgfComposer {
         append("HA", game.getHandicap());
 
         /*
+        append("KM", game.getKomi());
         append("GN", game.getName());
-        //private List<String> dates = new LinkedList<String>(); // DT
+        append("DT", game.getDates());
         append("CP", game.getCopyright());
         append("GC", game.getComment());
         append("EV", game.getEvent());
@@ -93,7 +107,8 @@ public class SgfComposer {
         append("PC", game.getPlace());
         append("SO", game.getSource());
         append("AN", game.getAnnotation());
-        append("US", game.getUser());*/
+        append("US", game.getUser());
+        //*/
     }
 
     private void append(History history) {

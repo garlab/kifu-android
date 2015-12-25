@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -18,8 +19,9 @@ import fr.narwhals.go.domain.Game.Rule;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Section.SColor;
 
-public class NewGameActivity extends Activity implements OnSeekBarChangeListener {
+public class NewGameActivity extends Activity implements OnSeekBarChangeListener, View.OnClickListener {
 
+    // TODO use androidannotations to clean that page
     private SeekBar handicapView;
     private RadioGroup sizeView;
     private RadioGroup ruleView;
@@ -28,6 +30,7 @@ public class NewGameActivity extends Activity implements OnSeekBarChangeListener
     private EditText blackView;
     private CheckBox aiBlackView;
     private CheckBox aiWhiteView;
+    private Button playView;
 
     public final static int[] sizes = { 9, 13, 19 };
 
@@ -46,12 +49,15 @@ public class NewGameActivity extends Activity implements OnSeekBarChangeListener
         blackView = (EditText) findViewById(R.id.player_black);
         aiBlackView = (CheckBox) findViewById(R.id.ai_black);
         aiWhiteView = (CheckBox) findViewById(R.id.ai_white);
+        playView = (Button) findViewById(R.id.play);
 
         h_value.setText(String.valueOf(handicapView.getProgress()));
         handicapView.setOnSeekBarChangeListener(this);
+        playView.setOnClickListener(this);
     }
 
-    public void play(View v) {
+    @Override
+    public void onClick(View v) {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("size", getSize());
         intent.putExtra("handicap", getHandicap());

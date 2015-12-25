@@ -446,7 +446,7 @@ public class GameActivity extends Activity {
 			}
 		}
 
-		private void drawHoshis(Point[] hoshis, int size, Canvas canvas) {
+		private void drawHoshis(List<Point> hoshis, int size, Canvas canvas) {
 			paint.setStyle(Style.FILL);
 			paint.setColor(Color.BLACK);
 			int hoshiSize = screenSize / (130); // TODO: choisir une valeur
