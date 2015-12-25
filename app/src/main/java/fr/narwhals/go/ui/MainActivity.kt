@@ -16,8 +16,7 @@ class MainActivity : Activity() {
     }
 
     fun play(v: View) {
-        val intent = Intent(this, NewGameActivity::class.java)
-        startActivity(intent)
+        startActivity(H.newGame(this))
     }
 
     fun preferences(v: View) {

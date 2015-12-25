@@ -130,7 +130,6 @@
             android:id="@+id/h_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="minus"
             android:text="-" />
 
         <SeekBar
@@ -144,7 +143,6 @@
             android:id="@+id/h_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="plus"
             android:text="+" />
 
         <TextView
