@@ -36,7 +36,7 @@ public class NewGameActivity extends Activity {
 
     @Click(R.id.play)
     void play() {
-        Intent intent = new Intent(this, GameActivity.class);
+        Intent intent = new Intent(this, GameActivity_.class);
         intent.putExtra("size", getSize());
         intent.putExtra("handicap", getHandicap());
         intent.putExtra("rule", getRule());

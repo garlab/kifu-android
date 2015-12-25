@@ -17,12 +17,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.androidannotations.annotations.*;
 
 import fr.narwhals.go.Config;
 import fr.narwhals.go.R;
@@ -39,6 +40,8 @@ import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.domain.StoneGroup;
 import fr.narwhals.go.domain.Territory;
 
+@NoTitle
+@EActivity(R.layout.game)
 public class GameActivity extends Activity {
 	public enum State {
 		OnGoing, Territories, Over, Review
@@ -52,18 +55,45 @@ public class GameActivity extends Activity {
 
 	private Go go = null;
 
-	private Button firstButton;
-	private Button undoButton;
-	private Button passButton;
-	private Button nextButton;
-	private Button lastButton;
+	@ViewById(R.id.first) Button firstButton;
+	@ViewById(R.id.undo) Button undoButton;
+	@ViewById(R.id.pass) Button passButton;
+	@ViewById(R.id.next) Button nextButton;
+	@ViewById(R.id.last) Button lastButton;
 
-	private TextView resultView;
+    @ViewById(R.id.result) TextView resultView;
 
-	private final TextView[] scoresView = new TextView[2];
-	private final LinearLayout[] barsView = new LinearLayout[State.values().length];
+	final TextView[] scoresView = new TextView[2];
+	final LinearLayout[] barsView = new LinearLayout[State.values().length];
 
-    private final AI bots[] = new AI[2];
+    final AI bots[] = new AI[2];
+
+    @AfterViews
+    void initViews() {
+        this.barsView[State.OnGoing.ordinal()] = (LinearLayout) findViewById(R.id.ongoing_bar);
+        this.barsView[State.Territories.ordinal()] = (LinearLayout) findViewById(R.id.territory_bar);
+        this.barsView[State.Over.ordinal()] = (LinearLayout) findViewById(R.id.over_bar);
+        this.barsView[State.Review.ordinal()] = (LinearLayout) findViewById(R.id.review_bar);
+
+        this.scoresView[SColor.BLACK.ordinal()] = (TextView) findViewById(R.id.black_score);
+        this.scoresView[SColor.WHITE.ordinal()] = (TextView) findViewById(R.id.white_score);
+
+        final TextView blackPlayerText = (TextView) findViewById(R.id.black_player);
+        blackPlayerText.setText(go.players[SColor.BLACK.ordinal()].toString());
+
+        final TextView whitePlayerText = (TextView) findViewById(R.id.white_player);
+        whitePlayerText.setText(go.players[SColor.WHITE.ordinal()].toString());
+
+        int screenSize = getScreenSize();
+
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.goban);
+        layout.getLayoutParams().height = screenSize;
+        layout.getLayoutParams().width = screenSize;
+
+        grid = new GridView(this, screenSize);
+        layout.addView(grid);
+        nextRound();
+    }
 
     private void initBots(Player[] players) {
         if (players[0].getAi()) {
@@ -93,9 +123,7 @@ public class GameActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		setContentView(R.layout.game);
 
 		this.config = new Config(this);
 
@@ -121,38 +149,6 @@ public class GameActivity extends Activity {
 			// TODO: Ouvrir fichiers sgf
 			// open(getIntent().getData());
 		}
-
-		this.firstButton = (Button) findViewById(R.id.first);
-		this.undoButton = (Button) findViewById(R.id.undo);
-		this.passButton = (Button) findViewById(R.id.pass);
-		this.nextButton = (Button) findViewById(R.id.next);
-		this.lastButton = (Button) findViewById(R.id.last);
-
-		this.resultView = (TextView) findViewById(R.id.result);
-
-		this.barsView[State.OnGoing.ordinal()] = (LinearLayout) findViewById(R.id.ongoing_bar);
-		this.barsView[State.Territories.ordinal()] = (LinearLayout) findViewById(R.id.territory_bar);
-		this.barsView[State.Over.ordinal()] = (LinearLayout) findViewById(R.id.over_bar);
-		this.barsView[State.Review.ordinal()] = (LinearLayout) findViewById(R.id.review_bar);
-
-		this.scoresView[SColor.BLACK.ordinal()] = (TextView) findViewById(R.id.black_score);
-		this.scoresView[SColor.WHITE.ordinal()] = (TextView) findViewById(R.id.white_score);
-
-		final TextView blackPlayerText = (TextView) findViewById(R.id.black_player);
-		blackPlayerText.setText(go.players[SColor.BLACK.ordinal()].toString());
-
-		final TextView whitePlayerText = (TextView) findViewById(R.id.white_player);
-		whitePlayerText.setText(go.players[SColor.WHITE.ordinal()].toString());
-
-		int screenSize = getScreenSize();
-
-		final LinearLayout layout = (LinearLayout) findViewById(R.id.goban);
-		layout.getLayoutParams().height = screenSize;
-		layout.getLayoutParams().width = screenSize;
-
-		grid = new GridView(this, screenSize);
-		layout.addView(grid);
-		nextRound();
 	}
 
 	@Override
