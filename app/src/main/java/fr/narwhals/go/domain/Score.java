@@ -7,7 +7,6 @@ import fr.narwhals.go.domain.Game.Rule;
 import fr.narwhals.go.domain.Section.SColor;
 
 public class Score implements Serializable {
-	private static final long serialVersionUID = 5910933105550541654L;
 	private final Rule rule;
 	private final Info[] infos = new Info[] { new Info(), new Info() };
 
