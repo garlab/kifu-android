@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.*;
 
 import org.androidannotations.annotations.*;
@@ -17,16 +18,16 @@ import fr.narwhals.go.domain.Section.SColor;
 @EActivity(R.layout.new_game)
 public class NewGameActivity extends Activity {
 
-    @ViewById(R.id.handicap) SeekBar handicapView;
-    @ViewById(R.id.size) RadioGroup sizeView;
-    @ViewById(R.id.rule) RadioGroup ruleView;
-    @ViewById(R.id.hvalue) TextView h_value;
-    @ViewById(R.id.player_white) EditText whiteView;
-    @ViewById(R.id.player_black) EditText blackView;
-    @ViewById(R.id.ai_black) CheckBox aiBlackView;
-    @ViewById(R.id.ai_white) CheckBox aiWhiteView;
+    @ViewById SeekBar handicapSeekBar;
+    @ViewById RadioGroup sizeRadioGroup;
+    @ViewById RadioGroup ruleRadioGroup;
+    @ViewById TextView handicapTextView;
+    @ViewById EditText whitePlayerEditText;
+    @ViewById EditText blackPlayerEditText;
+    @ViewById CheckBox blackAiCheckBox;
+    @ViewById CheckBox whiteAiCheckBox;
 
-    public final static int[] sizes = { 9, 13, 19 };
+    final static int[] sizes = { 9, 13, 19 };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,65 +35,66 @@ public class NewGameActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    @Click(R.id.play)
-    void play() {
+    @Click
+    void playButtonClicked() {
         Intent intent = new Intent(this, GameActivity_.class);
         intent.putExtra("size", getSize());
         intent.putExtra("handicap", getHandicap());
         intent.putExtra("rule", getRule());
 
         intent.putExtra("blackPlayer", getPlayer(SColor.BLACK,
-                blackView.getText().toString(),
+                blackPlayerEditText.getText().toString(),
                 getString(R.string.black),
-                aiBlackView.isChecked()
+                blackAiCheckBox.isChecked()
         ));
 
         intent.putExtra("whitePlayer", getPlayer(SColor.WHITE,
-                whiteView.getText().toString(),
+                whitePlayerEditText.getText().toString(),
                 getString(R.string.white),
-                aiWhiteView.isChecked()
+                whiteAiCheckBox.isChecked()
         ));
 
         startActivity(intent);
     }
 
-    @Click(R.id.h_plus)
-    void plus() {
-        handicapView.setProgress(handicapView.getProgress() + 1);
-        h_value.setText(String.valueOf(handicapView.getProgress()));
+    @Click
+    void decreaseHandicapButtonClicked() {
+        handicapSeekBar.setProgress(handicapSeekBar.getProgress() - 1);
+        handicapTextView.setText(String.valueOf(handicapSeekBar.getProgress()));
     }
 
-    @Click(R.id.h_minus)
-    void minus() {
-        handicapView.setProgress(handicapView.getProgress() - 1);
-        h_value.setText(String.valueOf(handicapView.getProgress()));
+    @Click
+    void increaseHandicapButtonClicked() {
+        handicapSeekBar.setProgress(handicapSeekBar.getProgress() + 1);
+        handicapTextView.setText(String.valueOf(handicapSeekBar.getProgress()));
     }
 
-    @SeekBarProgressChange(R.id.handicap)
-    void updateHandicap() {
-        h_value.setText(String.valueOf(handicapView.getProgress()));
+    @SeekBarProgressChange
+    void handicapSeekBar() {
+        handicapTextView.setText(String.valueOf(handicapSeekBar.getProgress()));
     }
 
     @AfterViews
     void initHandicap() {
-        h_value.setText(String.valueOf(handicapView.getProgress()));
+        handicapTextView.setText(String.valueOf(handicapSeekBar.getProgress()));
     }
 
     Player getPlayer(SColor color, String name, String defaultName, boolean ai) {
-        return new Player(color, name.equals("") ? defaultName : name, ai);
+        return new Player(color, "".equals(name) ? defaultName : name, ai);
     }
 
     int getHandicap() {
-        return handicapView.getProgress();
+        return handicapSeekBar.getProgress();
     }
 
     Rule getRule() {
-        RadioButton rb = (RadioButton) findViewById(ruleView.getCheckedRadioButtonId());
+        RadioButton rb = (RadioButton) findViewById(ruleRadioGroup.getCheckedRadioButtonId());
         return rb.getId() == R.id.japanese ? Rule.Japanese : Rule.Chinese;
     }
 
     int getSize() {
-        int sizeId = sizeView.indexOfChild(findViewById(sizeView.getCheckedRadioButtonId()));
+        View checkedButton = findViewById(sizeRadioGroup.getCheckedRadioButtonId());
+        int sizeId = sizeRadioGroup.indexOfChild(checkedButton);
         return sizes[sizeId];
     }
 }

@@ -19,13 +19,13 @@
             android:src="@drawable/stone_white" />
 
         <EditText
-            android:id="@+id/player_white"
+            android:id="@+id/white_player_edit_text"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="@string/white_player" />
 
         <CheckBox
-            android:id="@+id/ai_white"
+            android:id="@+id/white_ai_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ai" />
@@ -44,14 +44,14 @@
             android:src="@drawable/stone_black" />
 
         <EditText
-            android:id="@+id/player_black"
+            android:id="@+id/black_player_edit_text"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:hint="@string/black_player" >
         </EditText>
 
         <CheckBox
-            android:id="@+id/ai_black"
+            android:id="@+id/black_ai_check_box"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ai" />
@@ -63,7 +63,7 @@
         android:text="@string/size" />
 
     <RadioGroup
-        android:id="@+id/size"
+        android:id="@+id/size_radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dividerPadding="40dp"
@@ -95,7 +95,7 @@
         android:text="@string/rule" />
 
     <RadioGroup
-        android:id="@+id/rule"
+        android:id="@+id/rule_radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:dividerPadding="40dp"
@@ -127,32 +127,32 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/h_minus"
+            android:id="@+id/decrease_handicap_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="-" />
 
         <SeekBar
-            android:id="@+id/handicap"
+            android:id="@+id/handicap_seek_bar"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:max="9"
             android:text="@string/handicap" />
 
         <Button
-            android:id="@+id/h_plus"
+            android:id="@+id/increase_handicap_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+" />
 
         <TextView
-            android:id="@+id/hvalue"
+            android:id="@+id/handicap_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/play"
+        android:id="@+id/play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
