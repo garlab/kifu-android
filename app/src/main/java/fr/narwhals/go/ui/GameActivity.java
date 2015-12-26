@@ -43,20 +43,19 @@ import fr.narwhals.go.domain.Territory;
 @EActivity(R.layout.game)
 public class GameActivity extends Activity implements GoEvent {
 
-    private Config config;
-    private GridView grid;
-
-    @ViewById(R.id.first) Button firstButton;
-    @ViewById(R.id.undo) Button undoButton;
-    @ViewById(R.id.pass) Button passButton;
-    @ViewById(R.id.next) Button nextButton;
-    @ViewById(R.id.last) Button lastButton;
+    @ViewById Button firstButton;
+    @ViewById Button undoButton;
+    @ViewById Button passButton;
+    @ViewById Button nextButton;
+    @ViewById Button lastButton;
 
     @ViewById(R.id.result) TextView resultView;
 
     final TextView[] scoresView = new TextView[2];
     final LinearLayout[] barsView = new LinearLayout[Go.State.values().length];
 
+    Config config;
+    GridView grid;
     final AI bots[] = new AI[2];
     Go go;
 
@@ -143,6 +142,7 @@ public class GameActivity extends Activity implements GoEvent {
     }
 
     private void botMove() {
+        // TODO: pass the config value as a parameter to the ai
         Stone prev = go.history.getCurrentMove().getStone();
         if (config.aiPass() && prev == Stone.PASS) {
             go.pass();
@@ -166,7 +166,8 @@ public class GameActivity extends Activity implements GoEvent {
         }
     }
 
-    public void goFirst(View v) {
+    @Click
+    void firstButtonClicked() {
         if (go.history.hasPrev()) {
             go.goban.clear();
             go.history.goFirst();
@@ -174,49 +175,66 @@ public class GameActivity extends Activity implements GoEvent {
         }
     }
 
-    public void undo(View v) {
+    @Click
+    void previousButtonClicked() {
         if (go.history.hasPrev()) {
             go.history.undo();
             grid.invalidate();
         }
     }
 
-    public void goNext(View v) {
+    @Click
+    void nextButtonClicked() {
         if (go.history.hasNext()) {
             go.history.playNext();
             grid.invalidate();
         }
     }
 
-    public void goLast(View v) {
+    @Click
+    void lastButtonClicked() {
         while (go.history.hasNext()) {
             go.history.playNext();
         }
         grid.invalidate();
     }
 
-    public void pass(View v) {
+    @Click
+    void undoButtonClicked() {
+        if (go.history.hasPrev()) {
+            go.history.undo();
+            grid.invalidate();
+        }
+    }
+
+    @Click
+    public void passButtonClicked() {
         go.pass();
         grid.invalidate();
     }
 
-    public void giveUp(View v) {
+    @Click
+    void giveUpButtonClicked() {
         go.setEndOfGame(Go.EndOfGame.GiveUp);
     }
 
-    public void cancel(View v) {
+    @Click
+    void cancelButtonClicked() {
         go.setState(Go.State.OnGoing);
     }
 
-    public void proceed(View v) {
+    @Click
+    void proceedButtonClicked() {
         go.setEndOfGame(Go.EndOfGame.Standard);
     }
 
-    public void review(View v) {
+    @Click
+    void reviewButtonClicked() {
         go.setState(Go.State.Review);
     }
 
-    public void playAgain(View v) {
+    @Click
+    void playAgainButtonClicked() {
         go.clear();
         resultView.setText("");
         go.setState(Go.State.OnGoing);

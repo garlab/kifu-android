@@ -82,52 +82,28 @@
 
     <LinearLayout
         android:id="@+id/review_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        android:weightSum="1.0" >
+        android:weightSum="1.0"
+        style="@style/buttonGroupStyle" >
 
         <Button
-            android:id="@+id/first"
-            android:layout_width="0dp"
-            android:layout_height="22pt"
-            android:layout_margin="4dp"
-            android:layout_weight=".25"
+            android:id="@+id/first_button"
             android:background="@drawable/first"
-            android:gravity="center"
-            android:onClick="goFirst" />
+            style="@style/reviewButtonStyle" />
 
         <Button
-            android:id="@+id/previous"
-            android:layout_width="0dp"
-            android:layout_height="22pt"
-            android:layout_margin="4dp"
-            android:layout_weight=".25"
+            android:id="@+id/previous_button"
             android:background="@drawable/prev"
-            android:gravity="center"
-            android:onClick="undo" />
+            style="@style/reviewButtonStyle" />
 
         <Button
-            android:id="@+id/next"
-            android:layout_width="0dp"
-            android:layout_height="22pt"
-            android:layout_margin="4dp"
-            android:layout_weight=".25"
+            android:id="@+id/next_button"
             android:background="@drawable/next"
-            android:gravity="center"
-            android:onClick="goNext" />
+            style="@style/reviewButtonStyle" />
 
         <Button
-            android:id="@+id/last"
-            android:layout_width="0dp"
-            android:layout_height="22pt"
-            android:layout_margin="4dp"
-            android:layout_weight=".25"
+            android:id="@+id/last_button"
             android:background="@drawable/last"
-            android:gravity="center"
-            android:onClick="goLast" />
+            style="@style/reviewButtonStyle" />
     </LinearLayout>
 
     <LinearLayout
@@ -138,64 +114,49 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/undo"
-            style="@style/buttonStyle"
-            android:onClick="undo"
-            android:text="@string/undo" />
+            android:id="@+id/undo_button"
+            android:text="@string/undo"
+            style="@style/buttonStyle" />
 
         <Button
-            android:id="@+id/pass"
-            style="@style/buttonStyle"
-            android:onClick="pass"
-            android:text="@string/pass" />
+            android:id="@+id/pass_button"
+            android:text="@string/pass"
+            style="@style/buttonStyle" />
 
         <Button
-            android:id="@+id/give_up"
-            style="@style/buttonStyle"
-            android:onClick="giveUp"
-            android:text="@string/give_up" />
+            android:id="@+id/give_up_button"
+            android:text="@string/give_up"
+            style="@style/buttonStyle" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/territory_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone" >
+        style="@style/buttonGroupStyle" >
 
         <Button
-            android:id="@+id/cancel"
-            style="@style/buttonStyle"
-            android:onClick="cancel"
-            android:text="@string/cancel" />
+            android:id="@+id/cancel_button"
+            android:text="@string/cancel"
+            style="@style/buttonStyle"/>
 
         <Button
-            android:id="@+id/proceed"
-            style="@style/buttonStyle"
-            android:onClick="proceed"
-            android:text="@string/proceed" />
+            android:id="@+id/proceed_button"
+            android:text="@string/proceed"
+            style="@style/buttonStyle" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/over_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone" >
+        style="@style/buttonGroupStyle" >
 
         <Button
-            android:id="@+id/review"
-            style="@style/buttonStyle"
-            android:onClick="review"
-            android:text="@string/review" />
+            android:id="@+id/review_button"
+            android:text="@string/review"
+            style="@style/buttonStyle" />
 
         <Button
-            android:id="@+id/play_again"
-            style="@style/buttonStyle"
-            android:onClick="playAgain"
-            android:text="@string/play_again" />
+            android:id="@+id/play_again_button"
+            android:text="@string/play_again"
+            style="@style/buttonStyle" />
     </LinearLayout>
 
 </LinearLayout>
