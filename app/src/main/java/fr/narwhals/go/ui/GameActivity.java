@@ -43,76 +43,31 @@ import fr.narwhals.go.domain.Territory;
 @EActivity(R.layout.game)
 public class GameActivity extends Activity implements GoEvent {
 
+    Config config;
+
+    @Extra int size;
+    @Extra int handicap;
+    @Extra Game.Rule rule;
+    @Extra Player blackPlayer;
+    @Extra Player whitePlayer;
+
+    Go go;
+    final AI bots[] = new AI[2];
+
     @ViewById Button firstButton;
     @ViewById Button undoButton;
     @ViewById Button passButton;
     @ViewById Button nextButton;
     @ViewById Button lastButton;
+    @ViewById TextView resultTextView;
+    @ViewById TextView blackPlayerTextView;
+    @ViewById TextView whitePlayerTextView;
+    @ViewById LinearLayout gobanLayout;
 
-    @ViewById(R.id.result) TextView resultView;
-
-    final TextView[] scoresView = new TextView[2];
     final LinearLayout[] barsView = new LinearLayout[Go.State.values().length];
+    final TextView[] scoresView = new TextView[2];
 
-    Config config;
     GridView grid;
-    final AI bots[] = new AI[2];
-    Go go;
-
-    @AfterViews
-    void initViews() {
-        this.barsView[Go.State.OnGoing.ordinal()] = (LinearLayout) findViewById(R.id.ongoing_bar);
-        this.barsView[Go.State.Territories.ordinal()] = (LinearLayout) findViewById(R.id.territory_bar);
-        this.barsView[Go.State.Over.ordinal()] = (LinearLayout) findViewById(R.id.over_bar);
-        this.barsView[Go.State.Review.ordinal()] = (LinearLayout) findViewById(R.id.review_bar);
-
-        this.scoresView[SColor.BLACK.ordinal()] = (TextView) findViewById(R.id.black_score);
-        this.scoresView[SColor.WHITE.ordinal()] = (TextView) findViewById(R.id.white_score);
-
-        this.go = loadGo();
-        final TextView blackPlayerText = (TextView) findViewById(R.id.black_player);
-        blackPlayerText.setText(go.players[SColor.BLACK.ordinal()].toString());
-
-        final TextView whitePlayerText = (TextView) findViewById(R.id.white_player);
-        whitePlayerText.setText(go.players[SColor.WHITE.ordinal()].toString());
-
-        int screenSize = getScreenSize();
-
-        final LinearLayout layout = (LinearLayout) findViewById(R.id.goban);
-        layout.getLayoutParams().height = screenSize;
-        layout.getLayoutParams().width = screenSize;
-
-        grid = new GridView(this, go, screenSize);
-        layout.addView(grid);
-        onNextTurn();
-    }
-
-    void initBots(Go go, Player[] players) {
-        if (players[0].getAi()) {
-            bots[0] = new OffensiveAI(go, players[0]);
-        }
-        if (players[1].getAi()) {
-            bots[1] = new OffensiveAI(go, players[1]);
-        }
-    }
-
-    Go loadGo() {
-        Bundle extras = getIntent().getExtras();
-
-        int size = extras.getInt("size");
-        int handicap = extras.getInt("handicap");
-        Game.Rule rule = (Game.Rule) extras.getSerializable("rule");
-        Player blackPlayer = (Player) extras.getSerializable("blackPlayer");
-        Player whitePlayer = (Player) extras.getSerializable("whitePlayer");
-
-        Player[] players = { blackPlayer, whitePlayer };
-        Game game = new Game(size, handicap, rule);
-
-        Go go = new Go(game, players, this);
-        initBots(go, players);
-
-        return go;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +82,44 @@ public class GameActivity extends Activity implements GoEvent {
         }
     }
 
+    @AfterExtras
+    void initGo() {
+        Player[] players = { blackPlayer, whitePlayer };
+        Game game = new Game(size, handicap, rule);
+
+        go = new Go(game, players, this);
+
+        if (players[0].getAi()) {
+            bots[0] = new OffensiveAI(go, players[0]);
+        }
+        if (players[1].getAi()) {
+            bots[1] = new OffensiveAI(go, players[1]);
+        }
+    }
+
+    @AfterViews
+    void initViews() {
+        this.barsView[Go.State.OnGoing.ordinal()] = (LinearLayout) findViewById(R.id.ongoing_bar);
+        this.barsView[Go.State.Territories.ordinal()] = (LinearLayout) findViewById(R.id.territory_bar);
+        this.barsView[Go.State.Over.ordinal()] = (LinearLayout) findViewById(R.id.over_bar);
+        this.barsView[Go.State.Review.ordinal()] = (LinearLayout) findViewById(R.id.review_bar);
+
+        this.scoresView[SColor.BLACK.ordinal()] = (TextView) findViewById(R.id.black_score);
+        this.scoresView[SColor.WHITE.ordinal()] = (TextView) findViewById(R.id.white_score);
+
+        blackPlayerTextView.setText(blackPlayer.getName());
+        whitePlayerTextView.setText(whitePlayer.getName());
+
+        int screenSize = getScreenSize();
+
+        gobanLayout.getLayoutParams().height = screenSize;
+        gobanLayout.getLayoutParams().width = screenSize;
+
+        grid = new GridView(this, go, screenSize);
+        gobanLayout.addView(grid);
+        onNextTurn();
+    }
+
     @Override
     public void onStateChange(Go.State oldState, Go.State newState) {
         barsView[oldState.ordinal()].setVisibility(View.GONE);
@@ -134,7 +127,7 @@ public class GameActivity extends Activity implements GoEvent {
         switch (newState) {
             case Over:
                 String result = go.getResult();
-                resultView.setText(result);
+                resultTextView.setText(result);
                 Toast.makeText(this, result, Toast.LENGTH_LONG).show();
                 break;
         }
@@ -236,7 +229,7 @@ public class GameActivity extends Activity implements GoEvent {
     @Click
     void playAgainButtonClicked() {
         go.clear();
-        resultView.setText("");
+        resultTextView.setText("");
         go.setState(Go.State.OnGoing);
     }
 
