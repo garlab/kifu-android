@@ -69,31 +69,27 @@ public class GameActivity extends Activity implements GoEvent {
 
     GridView grid;
 
+    @AfterExtras
+    void initGo() {
+        this.config = new Config(this);
+        this.go = new Go(size, handicap, rule, blackPlayer, whitePlayer, this);
+
+        if (blackPlayer.getAi()) {
+            bots[0] = new OffensiveAI(go, blackPlayer, config.aiPass());
+        }
+        if (whitePlayer.getAi()) {
+            bots[1] = new OffensiveAI(go, whitePlayer, config.aiPass());
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        this.config = new Config(this);
-
         if (config.fullscreen()) {
             int fullscreen = WindowManager.LayoutParams.FLAG_FULLSCREEN;
             getWindow().setFlags(fullscreen, fullscreen);
-        }
-    }
-
-    @AfterExtras
-    void initGo() {
-        Player[] players = { blackPlayer, whitePlayer };
-        Game game = new Game(size, handicap, rule);
-
-        go = new Go(game, players, this);
-
-        if (players[0].getAi()) {
-            bots[0] = new OffensiveAI(go, players[0]);
-        }
-        if (players[1].getAi()) {
-            bots[1] = new OffensiveAI(go, players[1]);
         }
     }
 
@@ -134,26 +130,16 @@ public class GameActivity extends Activity implements GoEvent {
         grid.invalidate();
     }
 
-    private void botMove() {
-        // TODO: pass the config value as a parameter to the ai
-        Stone prev = go.history.getCurrentMove().getStone();
-        if (config.aiPass() && prev == Stone.PASS) {
-            go.pass();
-        } else {
-            Stone stone = bots[go.getCurrentColor().ordinal()].getMove();
-            if (stone == Stone.PASS) {
-                go.pass();
-            } else {
-                go.move(stone);
-            }
-        }
-    }
-
     @Override
     public void onNextTurn() {
         if (go.getState() == Go.State.OnGoing) {
             if (go.getCurrentPlayer().getAi()) {
-                botMove();
+                Stone stone = bots[go.getCurrentColor().ordinal()].getMove();
+                if (stone == Stone.PASS) {
+                    go.pass();
+                } else {
+                    go.move(stone);
+                }
                 grid.invalidate();
             }
         }
@@ -233,7 +219,7 @@ public class GameActivity extends Activity implements GoEvent {
         go.setState(Go.State.OnGoing);
     }
 
-    private int getScreenSize() {
+    int getScreenSize() {
         int width = getWindowManager().getDefaultDisplay().getWidth();
         int height = getWindowManager().getDefaultDisplay().getHeight();
         return width > height ? height : width;

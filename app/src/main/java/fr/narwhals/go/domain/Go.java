@@ -24,8 +24,9 @@ public class Go implements Serializable {
 	public final Player[] players;
 	public final GoEvent eventListener;
 
-	public Go(Game game, Player[] players, GoEvent eventListener) {
-		this.game = game;
+	public Go(int size, int handicap, Game.Rule rule, Player blackPlayer, Player whitePlayer, GoEvent eventListener) {
+		this.game = new Game(size, handicap, rule);
+		Player[] players = { blackPlayer, whitePlayer };
 		this.players = players;
 		Score score = new Score(game.getRule(), game.getKomi());
 		this.goban = new Goban(game.getSize());

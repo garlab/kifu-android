@@ -11,7 +11,7 @@ import fr.narwhals.go.domain.Section;
 import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.domain.StoneGroup;
 
-public class OffensiveAI extends AI {
+public class OffensiveAI implements AI {
 
 	public enum Strategy {
 		FUSEKI, NORMAL
@@ -20,11 +20,13 @@ public class OffensiveAI extends AI {
 	private final Go go;
 	private final Player player;
 	private Strategy strategy;
+	private boolean aiMustPass;
 
-	public OffensiveAI(Go go, Player player) {
+	public OffensiveAI(Go go, Player player, boolean aiMustPass) {
 		this.go = go;
 		this.player = player;
 		this.strategy = getStrategy(go.game);
+		this.aiMustPass = aiMustPass;
 	}
 
 	private Strategy getStrategy(Game game) {
@@ -41,26 +43,26 @@ public class OffensiveAI extends AI {
 
 	@Override
 	public Stone getMove() {
-		Stone stone = null;
+        Stone prev = go.history.getCurrentMove().getStone();
+        if (aiMustPass && prev == Stone.PASS) {
+            return Stone.PASS;
+        }
+
 		switch (strategy) {
-		case FUSEKI:
-			Point corner = getBestCorner();
-			if (corner == null) {
-				this.strategy = Strategy.NORMAL;
-				stone = getMove();
-			} else {
-				stone = new Stone(player.getColor(), corner, go.goban);
-			}
-			break;
-		case NORMAL:
-			Value move = getMax();
-			stone = move.stone;
-			break;
-		default:
-			stone = Stone.PASS;
-			break;
-		}
-		return stone;
+            case FUSEKI:
+                Point corner = getBestCorner();
+                if (corner == null) {
+                    this.strategy = Strategy.NORMAL;
+                    return getMove();
+                } else {
+                    return new Stone(player.getColor(), corner, go.goban);
+                }
+            case NORMAL:
+                Value move = getMax();
+                return move.stone;
+        }
+
+        return Stone.PASS;
 	}
 
 	public Point getBestCorner() {
