@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@color/windowBackground"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -121,16 +122,10 @@
         android:text="@string/handicap" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/decrease_handicap_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-" />
 
         <SeekBar
             android:id="@+id/handicap_seek_bar"
@@ -138,12 +133,6 @@
             android:layout_height="wrap_content"
             android:max="9"
             android:text="@string/handicap" />
-
-        <Button
-            android:id="@+id/increase_handicap_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+" />
 
         <TextView
             android:id="@+id/handicap_text_view"

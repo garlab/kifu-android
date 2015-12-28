@@ -57,18 +57,6 @@ public class NewGameActivity extends Activity {
         startActivity(intent);
     }
 
-    @Click
-    void decreaseHandicapButtonClicked() {
-        handicapSeekBar.setProgress(handicapSeekBar.getProgress() - 1);
-        handicapTextView.setText(String.valueOf(handicapSeekBar.getProgress()));
-    }
-
-    @Click
-    void increaseHandicapButtonClicked() {
-        handicapSeekBar.setProgress(handicapSeekBar.getProgress() + 1);
-        handicapTextView.setText(String.valueOf(handicapSeekBar.getProgress()));
-    }
-
     @SeekBarProgressChange
     void handicapSeekBar() {
         handicapTextView.setText(String.valueOf(handicapSeekBar.getProgress()));

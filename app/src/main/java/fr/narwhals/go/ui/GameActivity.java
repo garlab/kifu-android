@@ -1,15 +1,16 @@
 package fr.narwhals.go.ui;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.*;
 
@@ -25,9 +26,8 @@ import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.view.BoardView;
 
-@NoTitle
 @EActivity(R.layout.game)
-public class GameActivity extends Activity implements GoEvent {
+public class GameActivity extends ActionBarActivity implements GoEvent {
 
     Config config;
 
@@ -40,21 +40,17 @@ public class GameActivity extends Activity implements GoEvent {
     Go go;
     final AI bots[] = new AI[2];
 
+    @ViewById Toolbar toolBar;
     @ViewById Button undoButton;
     @ViewById Button passButton;
     @ViewById Button firstButton;
     @ViewById Button previousButton;
     @ViewById Button nextButton;
     @ViewById Button lastButton;
-    @ViewById TextView resultTextView;
-    @ViewById TextView blackPlayerTextView;
-    @ViewById TextView whitePlayerTextView;
     @ViewById LinearLayout gobanLayout;
 
     final LinearLayout[] barsView = new LinearLayout[Go.State.values().length];
-    final TextView[] scoresView = new TextView[2];
 
-    int gobanSize;
     BoardView grid;
 
     @AfterExtras
@@ -75,6 +71,7 @@ public class GameActivity extends Activity implements GoEvent {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        // TODO: remove fullscreen option
         if (config.fullscreen()) {
             int fullscreen = WindowManager.LayoutParams.FLAG_FULLSCREEN;
             getWindow().setFlags(fullscreen, fullscreen);
@@ -88,20 +85,40 @@ public class GameActivity extends Activity implements GoEvent {
         this.barsView[Go.State.Over.ordinal()] = (LinearLayout) findViewById(R.id.over_bar);
         this.barsView[Go.State.Review.ordinal()] = (LinearLayout) findViewById(R.id.review_bar);
 
-        this.scoresView[SColor.BLACK.ordinal()] = (TextView) findViewById(R.id.black_score);
-        this.scoresView[SColor.WHITE.ordinal()] = (TextView) findViewById(R.id.white_score);
-
-        blackPlayerTextView.setText(blackPlayer.getName());
-        whitePlayerTextView.setText(whitePlayer.getName());
-
-        gobanSize = getScreenSize();
+        int gobanSize = getScreenSize();
 
         gobanLayout.getLayoutParams().height = gobanSize;
         gobanLayout.getLayoutParams().width = gobanSize;
 
         grid = new BoardView(this, config, go, gobanSize);
         gobanLayout.addView(grid);
+
+        setSupportActionBar(toolBar);
+        toolBar.setTitle(blackPlayer.getName() + " vs " + whitePlayer.getName());
+
         onNextTurn();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -109,13 +126,18 @@ public class GameActivity extends Activity implements GoEvent {
         barsView[oldState.ordinal()].setVisibility(View.GONE);
         barsView[newState.ordinal()].setVisibility(View.VISIBLE);
         switch (newState) {
+            case OnGoing:
+                showCurrentPlayer();
+                break;
+            case Territories:
+                toolBar.setSubtitle("Select dead stones");
+                break;
             case Review:
+                showCurrentPlayer();
                 updateReviewButtons();
                 break;
             case Over:
-                String result = go.getResult();
-                resultTextView.setText(result);
-                Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+                toolBar.setSubtitle(go.getResult());
                 break;
         }
         grid.invalidate();
@@ -123,28 +145,34 @@ public class GameActivity extends Activity implements GoEvent {
 
     @Override
     public void onNextTurn() {
-        if (go.getState() == Go.State.OnGoing) {
-            if (go.getCurrentPlayer().getAi()) {
-                Stone stone = bots[go.getCurrentColor().ordinal()].getMove();
-                if (stone == Stone.PASS) {
-                    go.pass();
-                } else {
-                    go.move(stone);
+        switch (go.getState()) {
+            case OnGoing:
+                showCurrentPlayer();
+                if (go.getCurrentPlayer().getAi()) {
+                    Stone stone = bots[go.getCurrentColor().ordinal()].getMove();
+                    if (stone == Stone.PASS) {
+                        go.pass();
+                    } else {
+                        go.move(stone);
+                    }
+                    grid.invalidate();
                 }
-                grid.invalidate();
-            }
+                break;
+            case Review:
+                showCurrentPlayer();
+                break;
         }
     }
 
     @Override
     public void onScoreChange() {
-        // TODO: Meilleur affichage
+        // TODO: Display captured stones somewhere
         int blackScore = go.history.score.getCapturedStones(SColor.BLACK)
                 + go.history.score.getMarkedDead(SColor.WHITE);
         int whiteScore = go.history.score.getCapturedStones(SColor.WHITE)
                 + go.history.score.getMarkedDead(SColor.BLACK);
-        scoresView[SColor.BLACK.ordinal()].setText("(" + blackScore + ")");
-        scoresView[SColor.WHITE.ordinal()].setText("(" + whiteScore + ")");
+        //scoresView[SColor.BLACK.ordinal()].setText("(" + blackScore + ")");
+        //scoresView[SColor.WHITE.ordinal()].setText("(" + whiteScore + ")");
     }
 
     @Click
@@ -221,8 +249,16 @@ public class GameActivity extends Activity implements GoEvent {
     @Click
     void playAgainButtonClicked() {
         go.clear();
-        resultTextView.setText("");
         go.setState(Go.State.OnGoing);
+    }
+    
+    void showCurrentPlayer() {
+        SColor color = go.getCurrentColor();
+        toolBar.setLogo(color.equals(SColor.BLACK) ?
+                R.drawable.stone_black :
+                R.drawable.stone_white
+        );
+        toolBar.setSubtitle(color + " to play");
     }
 
     void updateReviewButtons() {
