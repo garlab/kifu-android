@@ -1,4 +1,4 @@
-package fr.narwhals.go.ui;
+package fr.narwhals.go.activity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

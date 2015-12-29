@@ -20,7 +20,7 @@ import fr.narwhals.go.domain.Section;
 import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.domain.StoneGroup;
 import fr.narwhals.go.domain.Territory;
-import fr.narwhals.go.ui.H;
+import fr.narwhals.go.activity.H;
 
 public class BoardView extends View {
     private Paint paint = new Paint();

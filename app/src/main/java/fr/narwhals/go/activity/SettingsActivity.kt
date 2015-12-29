@@ -1,4 +1,4 @@
-package fr.narwhals.go.ui
+package fr.narwhals.go.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

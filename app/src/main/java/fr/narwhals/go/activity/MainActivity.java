@@ -1,4 +1,4 @@
-package fr.narwhals.go.ui;
+package fr.narwhals.go.activity;
 
 import android.app.Activity;
 import android.content.Intent;
