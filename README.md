@@ -32,3 +32,8 @@
 - handicap stones initial position
 - area score vs surface score
 - suicide allowed
+
+## Sounds
+
+- play a sound when a stone is played
+- play a different sound when a player pass
