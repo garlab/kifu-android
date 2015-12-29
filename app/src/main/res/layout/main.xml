@@ -3,32 +3,41 @@
     android:id="@+id/main"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background"
-    android:gravity="center"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/play_button"
-        android:layout_width="72pt"
-        android:layout_height="wrap_content"
-        android:layout_margin="1pt"
-        android:background="@drawable/button"
-        android:text="@string/play" />
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar" />
 
-    <Button
-        android:id="@+id/preferences_button"
-        android:layout_width="72pt"
-        android:layout_height="wrap_content"
-        android:layout_margin="1pt"
-        android:background="@drawable/button"
-        android:text="@string/preferences" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/help_button"
-        android:layout_width="72pt"
-        android:layout_height="wrap_content"
-        android:layout_margin="1pt"
-        android:background="@drawable/button"
-        android:text="@string/howToPlay" />
+        <Button
+            android:id="@+id/play_button"
+            android:layout_width="72pt"
+            android:layout_height="wrap_content"
+            android:layout_margin="1pt"
+            android:background="@drawable/button"
+            android:text="@string/play" />
 
+        <Button
+            android:id="@+id/preferences_button"
+            android:layout_width="72pt"
+            android:layout_height="wrap_content"
+            android:layout_margin="1pt"
+            android:background="@drawable/button"
+            android:text="@string/preferences" />
+
+        <Button
+            android:id="@+id/help_button"
+            android:layout_width="72pt"
+            android:layout_height="wrap_content"
+            android:layout_margin="1pt"
+            android:background="@drawable/button"
+            android:text="@string/howToPlay" />
+
+    </LinearLayout>
 </LinearLayout>

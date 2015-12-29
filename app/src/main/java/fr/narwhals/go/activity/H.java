@@ -24,10 +24,6 @@ import android.view.View;
 import android.widget.Toast;
 
 public final class H {
-    public static void showError(Throwable t, Context context) {
-        Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        Log.e(context.getClass().getName(), t.getLocalizedMessage(), t);
-    }
 
     public static Bitmap getBitmap(int drawable, int width, int height, Resources res) {
         Bitmap bm = BitmapFactory.decodeResource(res, drawable);
@@ -66,17 +62,6 @@ public final class H {
             if (object == null) { /* archive file is corupted */
                 context.deleteFile(filename);
             }
-        }
-    }
-
-    public static void pause(View view) throws InterruptedException {
-        view.invalidate();
-        view.setClickable(false);
-        Thread.currentThread();
-        try {
-            Thread.sleep(200);
-        } finally {
-            view.setClickable(true);
         }
     }
 
