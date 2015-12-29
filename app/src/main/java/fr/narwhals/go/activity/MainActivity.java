@@ -5,12 +5,14 @@ import android.net.Uri;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.res.StringRes;
 
 import fr.narwhals.go.R;
 
 @EActivity(R.layout.main)
 public class MainActivity extends BaseActivity {
-    final static String howToPlayUrl = "http://en.wikipedia.org/wiki/Go_(game)";
+
+    @StringRes String howToPlayUrl;
 
     @Click
     void playButtonClicked() {

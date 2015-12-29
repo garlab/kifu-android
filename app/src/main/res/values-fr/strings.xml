@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="app_name">Kifu</string>
     <!-- Main menu -->
     <string name="play">Jouer</string>
     <string name="preferences">Préférences</string>
     <string name="howToPlay">Règles</string>
+    <string name="howToPlayUrl">https://fr.wikipedia.org/wiki/Jeu_de_go</string>
     <!-- Buttons -->
     <string name="black">Noir</string>
     <string name="white">Blanc</string>

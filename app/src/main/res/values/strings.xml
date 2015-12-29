@@ -6,6 +6,7 @@
     <string name="play">Play</string>
     <string name="preferences">Preferences</string>
     <string name="howToPlay">How to play</string>
+    <string name="howToPlayUrl">http://en.wikipedia.org/wiki/Go_(game)</string>
     <!-- Buttons -->
     <string name="black">Black</string>
     <string name="white">White</string>
