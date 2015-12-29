@@ -36,13 +36,11 @@
     <string name="number_moves">Number moves</string>
     <string name="show_last_move">Show last move</string>
     <string name="ai_pass">AI pass after player</string>
-    <string name="fullscreen">Full screen</string>
     <string name="enable_sound">Enable sound</string>
     <string name="tag_variations_summary">Show a letter for each variation.</string>
     <string name="number_moves_summary">Show move number on each played stone.</string>
     <string name="show_last_move_summary">The last move will be enlighted.</string>
     <string name="ai_pass_summary">AI always pass when player pass.</string>
-    <string name="fullscreen_summary">Always use fullscreen mode.</string>
     <string name="enable_sound_summary">A sound will be played when a stone is holded.</string>
 
 </resources>

@@ -35,13 +35,11 @@
     <string name="number_moves">Numéroter les coups</string>
     <string name="show_last_move">Marquer le dernier coup</string>
     <string name="ai_pass">L\'IA passe après le joueur</string>
-    <string name="fullscreen">Plein écran</string>
     <string name="enable_sound">Son activé</string>
     <string name="tag_variations_summary">Affiche une lettre pour chaque variation.</string>
     <string name="number_moves_summary">Affiche le numéro du coup sur chaque pierre.</string>
     <string name="show_last_move_summary">Le dernier coup joué sera entouré pour plus de visibilité.</string>
     <string name="ai_pass_summary">L\'IA passe toujours lorsqu\'un joueur passe.</string>
-    <string name="fullscreen_summary">Le jeu sera toujours en plein écran.</string>
     <string name="enable_sound_summary">Un son sera joué pour chaque pierre posé.</string>
 
 </resources>

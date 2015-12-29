@@ -251,7 +251,8 @@ public class GameActivity extends ActionBarActivity implements GoEvent {
                 R.drawable.stone_black :
                 R.drawable.stone_white
         );
-        toolBar.setSubtitle(color + " to play");
+        toolBar.setLogoDescription(color.toString());
+        toolBar.setSubtitle(go.getCurrentPlayer().getName() + " to play");
     }
 
     void updateReviewButtons() {

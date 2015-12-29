@@ -14,7 +14,6 @@ import fr.narwhals.go.domain.Game.Rule;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Section.SColor;
 
-@NoTitle
 @EActivity(R.layout.new_game)
 public class NewGameActivity extends Activity {
 
