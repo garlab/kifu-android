@@ -26,11 +26,6 @@
             android:title="@string/ai_pass" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="fullscreen"
-            android:summary="@string/fullscreen_summary"
-            android:title="@string/fullscreen" />
-        <CheckBoxPreference
-            android:defaultValue="false"
             android:key="enable_sound"
             android:summary="@string/enable_sound_summary"
             android:title="@string/enable_sound" />

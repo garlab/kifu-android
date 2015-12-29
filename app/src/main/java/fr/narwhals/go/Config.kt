@@ -6,10 +6,6 @@ import android.preference.PreferenceManager
 class Config(context: Context) {
     val sp = PreferenceManager.getDefaultSharedPreferences(context)
 
-    fun fullscreen(): Boolean {
-        return sp.getBoolean("fullscreen", false)
-    }
-
     fun showLastMove(): Boolean {
         return sp.getBoolean("show_last_move", true)
     }

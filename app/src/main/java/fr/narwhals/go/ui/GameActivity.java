@@ -8,7 +8,6 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -70,12 +69,6 @@ public class GameActivity extends ActionBarActivity implements GoEvent {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        // TODO: remove fullscreen option
-        if (config.fullscreen()) {
-            int fullscreen = WindowManager.LayoutParams.FLAG_FULLSCREEN;
-            getWindow().setFlags(fullscreen, fullscreen);
-        }
     }
 
     @AfterViews

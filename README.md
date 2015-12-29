@@ -10,7 +10,6 @@
 
 ## appbar and preferences
 
-- disable fullscreen option
 - add a margin between board and appbar
 - reduce size and add margin around stone in appbar
 - add game option to appbar
