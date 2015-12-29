@@ -64,8 +64,4 @@ public final class H {
             }
         }
     }
-
-    public static Intent newGame(Context packageContext) {
-        return new Intent(packageContext, NewGameActivity_.class);
-    }
 }

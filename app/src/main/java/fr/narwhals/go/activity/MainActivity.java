@@ -16,7 +16,7 @@ public class MainActivity extends BaseActivity {
 
     @Click
     void playButtonClicked() {
-        startActivity(H.newGame(this));
+        NewGameActivity_.intent(this).start();
     }
 
     @Click
