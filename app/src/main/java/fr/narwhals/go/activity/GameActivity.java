@@ -2,11 +2,7 @@ package fr.narwhals.go.activity;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,7 +22,7 @@ import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.view.BoardView;
 
 @EActivity(R.layout.game)
-public class GameActivity extends ActionBarActivity implements GoEvent {
+public class GameActivity extends BaseActivity implements GoEvent {
 
     Config config;
 
@@ -39,7 +35,6 @@ public class GameActivity extends ActionBarActivity implements GoEvent {
     Go go;
     final AI bots[] = new AI[2];
 
-    @ViewById Toolbar toolBar;
     @ViewById Button undoButton;
     @ViewById Button passButton;
     @ViewById Button firstButton;
@@ -86,32 +81,9 @@ public class GameActivity extends ActionBarActivity implements GoEvent {
         grid = new BoardView(this, config, go, gobanSize);
         gobanLayout.addView(grid);
 
-        setSupportActionBar(toolBar);
         toolBar.setTitle(blackPlayer.getName() + " vs " + whitePlayer.getName());
 
         onNextTurn();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
