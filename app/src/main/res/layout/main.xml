@@ -8,27 +8,27 @@
     android:orientation="vertical" >
 
     <Button
+        android:id="@+id/play_button"
         android:layout_width="72pt"
         android:layout_height="wrap_content"
         android:layout_margin="1pt"
         android:background="@drawable/button"
-        android:onClick="play"
         android:text="@string/play" />
 
     <Button
+        android:id="@+id/preferences_button"
         android:layout_width="72pt"
         android:layout_height="wrap_content"
         android:layout_margin="1pt"
         android:background="@drawable/button"
-        android:onClick="preferences"
         android:text="@string/preferences" />
 
     <Button
+        android:id="@+id/help_button"
         android:layout_width="72pt"
         android:layout_height="wrap_content"
         android:layout_margin="1pt"
         android:background="@drawable/button"
-        android:onClick="howToPlay"
         android:text="@string/howToPlay" />
 
 </LinearLayout>
