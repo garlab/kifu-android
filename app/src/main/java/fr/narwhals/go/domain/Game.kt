@@ -14,7 +14,7 @@ class Game(val size: Int, val handicap: Int, val rule: Game.Rule) : Serializable
 
     var time: Int = 0
     var name: String? = null
-    var dates: MutableList<Date> = LinkedList()
+    var dates: Array<Date> = arrayOf(Date())
     var copyright: String? = null
     var comment: String? = null
     var event: String? = null
@@ -33,7 +33,6 @@ class Game(val size: Int, val handicap: Int, val rule: Game.Rule) : Serializable
     init {
         hoshis = getHoshis(size)
         handicaps = getHandicaps(handicap)
-        dates.add(Date())
     }
 
 	private fun getHoshis(size: Int): List<Point> {

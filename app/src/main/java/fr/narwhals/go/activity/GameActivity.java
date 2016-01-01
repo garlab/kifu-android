@@ -3,9 +3,12 @@ package fr.narwhals.go.activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.*;
 
@@ -19,9 +22,11 @@ import fr.narwhals.go.domain.GoEvent;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.domain.Stone;
+import fr.narwhals.go.sgf.SgfComposer;
 import fr.narwhals.go.view.BoardView;
 
 @EActivity(R.layout.game)
+@OptionsMenu(R.menu.menu_game)
 public class GameActivity extends BaseActivity implements GoEvent {
 
     Config config;
@@ -84,6 +89,13 @@ public class GameActivity extends BaseActivity implements GoEvent {
         toolBar.setTitle(blackPlayer.getName() + " vs " + whitePlayer.getName());
 
         onNextTurn();
+    }
+
+    @OptionsItem
+    void actionSave() {
+        String sgf = new SgfComposer(go).toString();
+        // TODO save the sgf
+        Toast.makeText(this, sgf, Toast.LENGTH_LONG).show();
     }
 
     @Override

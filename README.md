@@ -10,13 +10,16 @@
 
 ## appbar and preferences
 
-- add a margin between board and appbar
+- add a margin between board and appbar or enlarge goban
 - reduce size and add margin around stone in appbar
-- add game option to appbar
+- add preferences to appbar
+- add save game to menu
+- Move preference fragment to BaseActivity
+- Use of @PreferenceScreen
 
 ## MainActivity
 
-- display recents games
+- display recents games (cards)
 - open button
 - new game button
 

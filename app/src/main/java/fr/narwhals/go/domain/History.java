@@ -1,6 +1,7 @@
 package fr.narwhals.go.domain;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class History {
@@ -21,6 +22,10 @@ public class History {
 
 	public int getRound() {
 		return round;
+	}
+
+	public Node getRoot() {
+		return root;
 	}
 
 	public Move getCurrentMove() {
@@ -133,10 +138,10 @@ public class History {
 		return paths;
 	}
 
-	private static class Node {
+	public static class Node {
 		private Node parent;
 		private final int level;
-		private transient List<Node> children = new ArrayList<Node>();
+		private List<Node> children = new LinkedList<>();
 		private Move move;
 		private int lastPath = 0;
 
@@ -151,6 +156,14 @@ public class History {
 			this.level = parent.level + 1;
 			this.move = new Move(stone);
 		}
+
+        public Move getMove() {
+            return move;
+        }
+
+        public List<Node> getChildren() {
+            return children;
+        }
 
 		public String toString() {
 			String ret = "";

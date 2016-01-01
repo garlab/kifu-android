@@ -12,7 +12,7 @@ public class Go implements Serializable {
 	}
 
 	public enum EndOfGame {
-		None, Unknown, Standard, GiveUp, Mushobu
+		None, Unknown, Standard, GiveUp, Forfeit, Time, Mushobu
 	}
 
 	private State state = State.OnGoing;
@@ -68,17 +68,21 @@ public class Go implements Serializable {
 	}
 
 	public String getResult() {
+		String winner = getCurrentColor() == SColor.BLACK ? "W+" : "B+";
 		switch (endOfGame) {
 			case None:
-				return "";
+			case Mushobu:
+				return "Void";
 			case Unknown:
 				return "?";
 			case Standard:
 				return history.score.getResult();
 			case GiveUp:
-				return getCurrentColor() == SColor.BLACK ? "W+R" : "B+R";
-			case Mushobu:
-				return "Mushobu";
+				return winner + "R";
+			case Forfeit:
+				return winner + "F";
+			case Time:
+				return winner + "T";
 		}
 		throw new IllegalStateException("Unsupported endOfGane: " + endOfGame);
 	}
