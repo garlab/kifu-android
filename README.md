@@ -28,6 +28,11 @@
 - display cross in another color when move is valid
 - handle square/circle/triangle etc
 
+## Model
+
+- Rename Game GameInfo
+- Move winner and endOfGame in GameInfo
+
 ## Custom ruleSet
 
 - komi value

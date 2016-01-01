@@ -63,14 +63,14 @@ public class SgfComposer {
 
     private void append(String key, Point value) {
         if (value != null) {
-            sb.append(key + "[" + getString(value) + "]");
+            sb.append(key + "[" + value + "]");
         }
     }
 
     private void append(String key, Point[] values) {
         sb.append(key);
         for (Point value : values) {
-            sb.append("[" + getString(value) + "]");
+            sb.append("[" + value + "]");
         }
     }
 
@@ -150,10 +150,5 @@ public class SgfComposer {
         append("ST", 2); // Style, can be 0-3
         append("CA", "UTF-8");
         append("AP", "Kifu Android");
-    }
-
-    private static String getString(Point point) {
-        char[] value = { (char) (point.getX() - 1 + 'a'), (char) (point.getY() - 1 + 'a')};
-        return new String(value);
     }
 }
