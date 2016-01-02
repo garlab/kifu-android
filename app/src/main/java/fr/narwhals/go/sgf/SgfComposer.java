@@ -28,7 +28,6 @@ public class SgfComposer {
     }
 
     private void append(Go go) {
-        beginGameTree();
         appendHeader();
         append(go.game);
         for (Player player : go.players) {
@@ -48,11 +47,17 @@ public class SgfComposer {
     }
 
     private void beginNode() {
-        sb.append(";");
+        sb.append("\n;");
     }
 
     private void append(String key, int value) {
         sb.append(key + "[" + value + "]");
+    }
+
+    private void append(String key, int value, int defaultValue) {
+        if (value != defaultValue) {
+            sb.append(key + "[" + value + "]");
+        }
     }
 
     private void append(String key, double value) {
@@ -103,13 +108,13 @@ public class SgfComposer {
     }
 
     private void append(Game game) {
-        append("SZ", game.getSize());
-        append("TM", game.getTime());
         append("RU", game.getRule().toString());
-        append("HA", game.getHandicap());
-        //append("AB", game.getHandicaps());
-
+        append("SZ", game.getSize(), 19);
         append("KM", game.getKomi());
+        append("TM", game.getTime(), 0);
+        append("HA", game.getHandicap(), 0);
+        //append("AB", game.getHandicaps());
+        
         append("GN", game.getName());
         append("DT", game.getDates());
         append("CP", game.getCopyright());
@@ -148,11 +153,12 @@ public class SgfComposer {
     }
 
     private void appendHeader() {
-        beginNode();
+        sb.append("(;");
         append("GM", 1); // Game, 1 = Go
-        append("FF", 4); // File Format
-        append("ST", 2); // Style, can be 0-3
+        append("FF", 4, 1); // File Format
+        append("ST", 0); // Style, can be 0-3
         append("CA", "UTF-8");
-        append("AP", "Kifu Android");
+        append("AP", "Kifu-Android");
+        sb.append("\n");
     }
 }
