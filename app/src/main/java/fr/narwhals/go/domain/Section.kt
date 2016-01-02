@@ -24,10 +24,6 @@ open class Section(var color: Section.SColor, val point: Point, protected val go
     val opponentColor: SColor
         get() = color.opponentColor
 
-    fun hasGoban(): Boolean {
-        return goban != null
-    }
-
     fun add() {
         goban!!.set(this)
     }

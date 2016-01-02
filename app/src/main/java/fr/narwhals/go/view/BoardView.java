@@ -303,7 +303,7 @@ public class BoardView extends View {
         char label = 'A';
         //passButton.setTextColor(textColor);
         for (Stone stone : stones) {
-            if (stone == Stone.PASS) {
+            if (stone.getPoint() == Point.PASS) {
                 //passButton.setTextColor(crossColorInvalid);
             } else {
                 drawPath(stone.getPoint(), String.valueOf(label), size, canvas);

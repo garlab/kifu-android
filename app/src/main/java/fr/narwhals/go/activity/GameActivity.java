@@ -22,6 +22,7 @@ import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.GoEvent;
 import fr.narwhals.go.domain.Player;
+import fr.narwhals.go.domain.Point;
 import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.sgf.SgfComposer;
@@ -137,7 +138,7 @@ public class GameActivity extends BaseActivity implements GoEvent {
                 showCurrentPlayer();
                 if (go.getCurrentPlayer().getAi()) {
                     Stone stone = bots[go.getCurrentColor().ordinal()].getMove();
-                    if (stone == Stone.PASS) {
+                    if (stone.getPoint() == Point.PASS) {
                         go.pass();
                     } else {
                         go.move(stone);

@@ -68,10 +68,10 @@ public class History {
 	public void playNext() {
 		Move move = current.children.get(current.lastPath).move;
 		Stone stone = move.getStone();
-		if (stone.hasGoban()) {
+		if (stone.getPoint() != Point.PASS) {
 			move(move.getStone());
-		} else if (stone == Stone.PASS) {
-			pass();
+		} else if (stone.getPoint() == Point.PASS) {
+			pass(stone);
 		}
 	}
 
@@ -83,15 +83,20 @@ public class History {
 
 	public void undo() {
 		Stone stone = current.move.getStone();
-		if (stone.hasGoban()) {
+		if (stone.getPoint() != Point.PASS) {
 			score.reduceCapturedStones(stone.getColor(), stone.getCapturedStones().size());
 			stone.undo();
 		}
 		goPrev();
 	}
 
-	public void pass() {
-		add(Stone.PASS);
+	public boolean hasPassed() {
+        Stone current = getCurrentMove().getStone();
+        return current != null && current.getPoint() == Point.PASS;
+	}
+
+	public void pass(Stone pass) {
+		add(pass);
 	}
 
 	private void playHandicaps() {
@@ -110,7 +115,7 @@ public class History {
 			current.children.add(node);
 		}
 		goTo(node);
-		if (stone.hasGoban() && stone.isPotentialKo()) {
+		if (stone.getPoint() != Point.PASS && stone.isPotentialKo()) {
 			List<Stone> capturedStones = current.move.getStone().getCapturedStones();
 			if (capturedStones.size() == 1) {
 				current.move.setKo(capturedStones.get(0).getPoint());

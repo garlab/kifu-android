@@ -205,8 +205,4 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
             }
         }
     }
-
-    companion object {
-        val PASS = Stone(Section.SColor.NONE, Point(-1, -1), null)
-    }
 }
