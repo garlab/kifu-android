@@ -2,7 +2,7 @@ package fr.narwhals.go.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import org.androidannotations.annotations.AfterViews;
@@ -16,7 +16,7 @@ import fr.narwhals.go.R;
 
 @EActivity
 @OptionsMenu(R.menu.menu_main)
-public abstract class BaseActivity extends ActionBarActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @ViewById Toolbar toolBar;
     @StringRes String howToPlayUrl;
@@ -28,7 +28,8 @@ public abstract class BaseActivity extends ActionBarActivity {
 
     @OptionsItem
     void actionPreferences() {
-        // TODO display preferences fragment
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     @OptionsItem

@@ -5,17 +5,13 @@
 ## sgf
 
 - sgf import
-- sgf export
 - create interface SgfConstants
 
 ## appbar and preferences
 
 - add a margin between board and appbar or enlarge goban
 - reduce size and add margin around stone in appbar
-- add preferences to appbar
-- add save game to menu
-- Move preference fragment to BaseActivity
-- Use of @PreferenceScreen
+- show a dialog when clicking on save
 
 ## MainActivity
 

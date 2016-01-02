@@ -20,6 +20,14 @@ public class SgfComposer {
     private StringBuilder sb = new StringBuilder();
 
     public SgfComposer(Go go) {
+        append(go);
+    }
+
+    public String toString() {
+        return sb.toString();
+    }
+
+    private void append(Go go) {
         beginGameTree();
         appendHeader();
         append(go.game);
@@ -29,10 +37,6 @@ public class SgfComposer {
         append("RE", go.getResult());
         append(go.history);
         endGameTree();
-    }
-
-    public String toString() {
-        return sb.toString();
     }
 
     private void beginGameTree() {

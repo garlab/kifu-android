@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import org.androidannotations.annotations.*;
 
+import java.io.File;
+
 import fr.narwhals.go.Config;
 import fr.narwhals.go.R;
 import fr.narwhals.go.ai.AI;
@@ -23,13 +25,12 @@ import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.sgf.SgfComposer;
+import fr.narwhals.go.util.FileUtil;
 import fr.narwhals.go.view.BoardView;
 
 @EActivity(R.layout.game)
 @OptionsMenu(R.menu.menu_game)
 public class GameActivity extends BaseActivity implements GoEvent {
-
-    Config config;
 
     @Extra int size;
     @Extra int handicap;
@@ -37,7 +38,9 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @Extra Player blackPlayer;
     @Extra Player whitePlayer;
 
+    Config config;
     Go go;
+    String fileName;
     final AI bots[] = new AI[2];
 
     @ViewById Button undoButton;
@@ -56,6 +59,7 @@ public class GameActivity extends BaseActivity implements GoEvent {
     void initGo() {
         this.config = new Config(this);
         this.go = new Go(size, handicap, rule, blackPlayer, whitePlayer, this);
+        this.fileName = "kifu_" + System.currentTimeMillis() + ".sgf";
 
         if (blackPlayer.getAi()) {
             bots[0] = new OffensiveAI(go, blackPlayer, config.aiPass());
@@ -94,8 +98,13 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @OptionsItem
     void actionSave() {
         String sgf = new SgfComposer(go).toString();
-        // TODO save the sgf
-        Toast.makeText(this, sgf, Toast.LENGTH_LONG).show();
+        File sgfFile = FileUtil.saveSgf(fileName, sgf);
+        if (sgfFile != null) {
+            Toast.makeText(this, "Game saved at " + sgfFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+        } else {
+            // TODO: use a snackbar with retry button
+            Toast.makeText(this, "Error while saving game", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
