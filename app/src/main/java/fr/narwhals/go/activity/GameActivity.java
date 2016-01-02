@@ -100,7 +100,8 @@ public class GameActivity extends BaseActivity implements GoEvent {
         String sgf = new SgfComposer(go).toString();
         File sgfFile = FileUtil.saveSgf(fileName, sgf);
         if (sgfFile != null) {
-            Toast.makeText(this, "Game saved at " + sgfFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Game saved at " + sgfFile, Toast.LENGTH_LONG).show();
+            sendBroadcast(FileUtil.indexFile(sgfFile));
         } else {
             // TODO: use a snackbar with retry button
             Toast.makeText(this, "Error while saving game", Toast.LENGTH_LONG).show();

@@ -1,5 +1,7 @@
 package fr.narwhals.go.util;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -12,6 +14,15 @@ import java.io.InputStream;
 public class FileUtil {
     static final String LOG_TAG = "FileUtil";
     static final String SGF_DIR = "sgf";
+
+    public static Intent indexFile(File file) {
+        // TODO: Find a workaround for modified files, since this will only work for newly created files
+        // Maybe remove the file first, using getContentResolver().delete(uri, null, null)
+        return new Intent(
+                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                Uri.fromFile(file)
+        );
+    }
 
     public static File saveSgf(String fileName, String content) {
         if (!isExternalStorageWritable()) {
@@ -59,14 +70,18 @@ public class FileUtil {
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
+    public static File getSgfStorageDirectory() {
+        return new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOCUMENTS), SGF_DIR);
+    }
+
     public static File getSgfStorageFile(String fileName) {
-        File sgfFile = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), SGF_DIR + "/" + fileName);
-        File sgfDir = sgfFile.getParentFile();
+        File sgfDir = getSgfStorageDirectory();
         if (!sgfDir.mkdirs() && !sgfDir.isDirectory()) {
             return null;
         }
-        return sgfFile;
+
+        return new File(sgfDir, fileName);
     }
 
     private static int readInt(InputStream in) throws IOException {
