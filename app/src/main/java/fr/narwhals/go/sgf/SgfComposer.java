@@ -114,7 +114,7 @@ public class SgfComposer {
         append("TM", game.getTime(), 0);
         append("HA", game.getHandicap(), 0);
         //append("AB", game.getHandicaps());
-        
+
         append("GN", game.getName());
         append("DT", game.getDates());
         append("CP", game.getCopyright());

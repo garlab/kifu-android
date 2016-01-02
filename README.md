@@ -6,6 +6,8 @@
 
 - sgf import
 - create interface SgfConstants
+- Add handicapts AB/AW
+- Add territories TB/TW
 
 ## appbar and preferences
 

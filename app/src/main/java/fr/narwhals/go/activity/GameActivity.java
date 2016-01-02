@@ -3,8 +3,6 @@ package fr.narwhals.go.activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Display;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -14,7 +12,7 @@ import org.androidannotations.annotations.*;
 
 import java.io.File;
 
-import fr.narwhals.go.Config;
+import fr.narwhals.go.bean.Config;
 import fr.narwhals.go.R;
 import fr.narwhals.go.ai.AI;
 import fr.narwhals.go.ai.OffensiveAI;
@@ -38,10 +36,10 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @Extra Game.Rule rule;
     @Extra Player blackPlayer;
     @Extra Player whitePlayer;
-
-    Config config;
-    Go go;
     String fileName;
+    Go go;
+
+    @Bean Config config;
     final AI bots[] = new AI[2];
 
     @ViewById Button undoButton;
@@ -58,10 +56,12 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @AfterExtras
     void initGo() {
-        this.config = new Config(this);
         this.go = new Go(size, handicap, rule, blackPlayer, whitePlayer, this);
         this.fileName = "kifu_" + System.currentTimeMillis() + ".sgf";
+    }
 
+    @AfterInject
+    void initBots() {
         if (blackPlayer.getAi()) {
             bots[0] = new OffensiveAI(go, blackPlayer, config.aiPass());
         }

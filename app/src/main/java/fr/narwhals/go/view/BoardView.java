@@ -10,7 +10,7 @@ import android.view.View;
 
 import java.util.List;
 
-import fr.narwhals.go.Config;
+import fr.narwhals.go.bean.Config;
 import fr.narwhals.go.R;
 import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.Liberty;
