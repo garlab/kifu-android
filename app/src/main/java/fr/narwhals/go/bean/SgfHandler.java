@@ -3,10 +3,11 @@ package fr.narwhals.go.bean;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.widget.LinearLayout;
 
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,24 +17,53 @@ import fr.narwhals.go.sgf.SgfComposer;
 import fr.narwhals.go.util.FileUtil;
 
 @EBean
-public class SgfHandler {
-    static final String SGF_DIR = "sgf";
+public class SgfHandler implements View.OnClickListener {
 
-    @RootContext Context context;
-    String fileName;
+    protected @RootContext Context context;
+    protected @ViewById LinearLayout gameLayout;
+
+    private Go game;
+    private String fileName;
+    private String fileContent;
 
     @AfterInject
-    void initFileName() {
+    public void initFileName() {
         this.fileName = "kifu_" + System.currentTimeMillis() + ".sgf";
     }
 
-    public File save(Go game) throws IOException {
-        File sgfFile = getSgfFile();
-        String sgf = new SgfComposer(game).toString();
-        FileUtil.save(sgfFile, sgf);
-        indexFile(sgfFile);
+    public void save(Go game) {
+        this.game = game;
+        this.fileContent = null;
 
-        return sgfFile;
+        save();
+    }
+
+    private void save() {
+        try {
+            File file = getSgfFile();
+            String sgf = getFileContent();
+            FileUtil.save(file, sgf);
+            indexFile(file);
+
+            Snackbar.make(gameLayout, "Game saved", Snackbar.LENGTH_SHORT)
+                    .show();
+        } catch (IOException e) {
+            Snackbar.make(gameLayout, e.getMessage(), Snackbar.LENGTH_LONG)
+                    .setAction("RETRY", this)
+                    .show();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        save();
+    }
+
+    private String getFileContent() {
+        if (fileContent == null) {
+            fileContent = new SgfComposer().compose(game).toString();
+        }
+        return fileContent;
     }
 
     private void indexFile(File file) {

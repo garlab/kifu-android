@@ -6,12 +6,8 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.androidannotations.annotations.*;
-
-import java.io.File;
-import java.io.IOException;
 
 import fr.narwhals.go.bean.Config;
 import fr.narwhals.go.R;
@@ -27,7 +23,7 @@ import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.view.BoardView;
 
-@EActivity(R.layout.game)
+@EActivity(R.layout.game_layout)
 @OptionsMenu(R.menu.menu_game)
 public class GameActivity extends BaseActivity implements GoEvent {
 
@@ -97,13 +93,7 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @OptionsItem
     void actionSave() {
-        try {
-            File sgfFile = sgfHandler.save(go);
-            Toast.makeText(this, "Game saved at " + sgfFile, Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            // TODO: use a snackbar with retry button
-            Toast.makeText(this, "Error while saving game", Toast.LENGTH_LONG).show();
-        }
+        sgfHandler.save(go);
     }
 
     @Override
@@ -233,8 +223,8 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @Click
     void playAgainButtonClicked() {
+        sgfHandler.initFileName();
         go.clear();
-        go.setState(Go.State.OnGoing);
     }
     
     void showCurrentPlayer() {

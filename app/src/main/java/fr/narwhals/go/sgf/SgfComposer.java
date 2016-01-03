@@ -3,10 +3,7 @@ package fr.narwhals.go.sgf;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
 
 import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.Go;
@@ -17,24 +14,29 @@ import fr.narwhals.go.domain.Point;
 import fr.narwhals.go.domain.Stone;
 
 public class SgfComposer {
-    private StringBuilder sb = new StringBuilder();
+    private StringBuilder sb;
 
-    public SgfComposer(Go go) {
-        append(go);
+    public SgfComposer() {
+        this.sb = new StringBuilder();
+    }
+
+    public SgfComposer compose(Go game) {
+        append(game);
+        return this;
     }
 
     public String toString() {
         return sb.toString();
     }
 
-    private void append(Go go) {
+    private void append(Go game) {
         appendHeader();
-        append(go.game);
-        for (Player player : go.players) {
+        append(game.game);
+        for (Player player : game.players) {
             append(player);
         }
-        append("RE", go.getResult());
-        append(go.history);
+        append("RE", game.getResult());
+        append(game.history);
         endGameTree();
     }
 

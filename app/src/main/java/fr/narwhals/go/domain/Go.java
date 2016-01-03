@@ -45,6 +45,7 @@ public class Go implements Serializable {
     public void clear() {
         goban.clear();
         history.clear();
+        setState(Go.State.OnGoing);
     }
 
     public Player getCurrentPlayer() {
