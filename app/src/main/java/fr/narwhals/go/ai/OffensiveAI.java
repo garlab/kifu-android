@@ -2,8 +2,8 @@ package fr.narwhals.go.ai;
 
 import java.util.List;
 
+import fr.narwhals.go.domain.GameInfo;
 import fr.narwhals.go.domain.Game;
-import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.Liberty;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Point;
@@ -17,20 +17,20 @@ public class OffensiveAI implements AI {
         FUSEKI, NORMAL
     }
 
-    private final Go go;
+    private final Game game;
     private final Player player;
     private Strategy strategy;
     private boolean aiMustPass;
 
-    public OffensiveAI(Go go, Player player, boolean aiMustPass) {
-        this.go = go;
+    public OffensiveAI(Game game, Player player, boolean aiMustPass) {
+        this.game = game;
         this.player = player;
-        this.strategy = getStrategy(go.game);
+        this.strategy = getStrategy(game.gameInfo);
         this.aiMustPass = aiMustPass;
     }
 
-    private Strategy getStrategy(Game game) {
-        if (game.getSize() == 19) {
+    private Strategy getStrategy(GameInfo gameInfo) {
+        if (gameInfo.getSize() == 19) {
             return Strategy.FUSEKI;
         } else {
             return Strategy.NORMAL;
@@ -43,9 +43,9 @@ public class OffensiveAI implements AI {
 
     @Override
     public Stone getMove() {
-        Stone prev = go.history.getCurrentMove().getStone();
+        Stone prev = game.history.getCurrentMove().getStone();
         if (aiMustPass && prev.getPoint() == Point.PASS) {
-            return new Stone(player.getColor(), Point.PASS, go.goban);
+            return new Stone(player.getColor(), Point.PASS, game.goban);
         }
 
         switch (strategy) {
@@ -55,22 +55,22 @@ public class OffensiveAI implements AI {
                     this.strategy = Strategy.NORMAL;
                     return getMove();
                 } else {
-                    return new Stone(player.getColor(), corner, go.goban);
+                    return new Stone(player.getColor(), corner, game.goban);
                 }
             case NORMAL:
                 Value move = getMax();
                 return move.stone;
         }
 
-        return new Stone(player.getColor(), Point.PASS, go.goban);
+        return new Stone(player.getColor(), Point.PASS, game.goban);
     }
 
     public Point getBestCorner() {
         boolean isBest;
-        for (Point hoshi : go.game.getHoshis()) {
+        for (Point hoshi : game.gameInfo.getHoshis()) {
             isBest = true;
-            if (go.goban.isLiberty(hoshi)) {
-                for (Section neighbor : go.goban.getNeighbors(hoshi)) {
+            if (game.goban.isLiberty(hoshi)) {
+                for (Section neighbor : game.goban.getNeighbors(hoshi)) {
                     if (neighbor instanceof Stone) {
                         isBest = false;
                         break;
@@ -85,12 +85,12 @@ public class OffensiveAI implements AI {
     }
 
     public Value getMax() {
-        Value max = new Value(new Stone(player.getColor(), Point.PASS, go.goban));
-        List<Liberty> liberties = go.goban.getShuffledLiberties();
+        Value max = new Value(new Stone(player.getColor(), Point.PASS, game.goban));
+        List<Liberty> liberties = game.goban.getShuffledLiberties();
 
         for (Section section : liberties) {
-            Stone stone = new Stone(player.getColor(), section.getPoint(), go.goban);
-            if (stone.isMoveValid() && !go.history.getCurrentMove().getKo().equals(stone.getPoint())) {
+            Stone stone = new Stone(player.getColor(), section.getPoint(), game.goban);
+            if (stone.isMoveValid() && !game.history.getCurrentMove().getKo().equals(stone.getPoint())) {
                 Value current = new Value(stone);
                 if (current.getSum() > max.getSum()) {
                     max = current;

@@ -3,7 +3,7 @@ package fr.narwhals.go.domain;
 import java.io.Serializable;
 import java.util.List;
 
-import fr.narwhals.go.domain.Game.Rule;
+import fr.narwhals.go.domain.GameInfo.Rule;
 import fr.narwhals.go.domain.Section.SColor;
 
 public class Score implements Serializable {

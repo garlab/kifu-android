@@ -3,7 +3,7 @@ package fr.narwhals.go.domain
 import java.io.Serializable
 import java.util.*
 
-class Game(val size: Int, val handicap: Int, val rule: Game.Rule) : Serializable {
+class GameInfo(val size: Int, val handicap: Int, val rule: GameInfo.Rule) : Serializable {
     enum class Rule internal constructor(val komi: Double) {
         Japanese(6.5), Chinese(7.5)
     }

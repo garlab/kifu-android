@@ -6,7 +6,7 @@ import java.util.List;
 
 import fr.narwhals.go.domain.Section.SColor;
 
-public class Go implements Serializable {
+public class Game implements Serializable {
     public enum State {
         OnGoing, Territories, Over, Review
     }
@@ -18,25 +18,25 @@ public class Go implements Serializable {
     private State state = State.OnGoing;
     private EndOfGame endOfGame = EndOfGame.None;
 
-    public final Game game;
+    public final GameInfo gameInfo;
     public final History history;
     public final Goban goban;
     public final Player[] players;
     public final GoEvent eventListener;
 
-    public Go(int size, int handicap, Game.Rule rule, Player blackPlayer, Player whitePlayer, GoEvent eventListener) {
-        this.game = new Game(size, handicap, rule);
+    public Game(int size, int handicap, GameInfo.Rule rule, Player blackPlayer, Player whitePlayer, GoEvent eventListener) {
+        this.gameInfo = new GameInfo(size, handicap, rule);
         Player[] players = { blackPlayer, whitePlayer };
         this.players = players;
-        Score score = new Score(game.getRule(), game.getKomi());
-        this.goban = new Goban(game.getSize());
+        Score score = new Score(gameInfo.getRule(), gameInfo.getKomi());
+        this.goban = new Goban(gameInfo.getSize());
         this.history = new History(score, getHandicaps());
         this.eventListener = eventListener;
     }
 
     private List<Stone> getHandicaps() {
-        List<Stone> handicaps = new ArrayList<Stone>(game.getHandicap());
-        for (Point point : game.getHandicaps()) {
+        List<Stone> handicaps = new ArrayList<Stone>(gameInfo.getHandicap());
+        for (Point point : gameInfo.getHandicaps()) {
             handicaps.add(new Stone(SColor.BLACK, point, goban));
         }
         return handicaps;
@@ -45,7 +45,7 @@ public class Go implements Serializable {
     public void clear() {
         goban.clear();
         history.clear();
-        setState(Go.State.OnGoing);
+        setState(Game.State.OnGoing);
     }
 
     public Player getCurrentPlayer() {
@@ -53,13 +53,13 @@ public class Go implements Serializable {
     }
 
     public Player getNextPlayer() {
-        int diff = game.getHandicap() == 0 ? 0 : 1;
+        int diff = gameInfo.getHandicap() == 0 ? 0 : 1;
         int i = (history.getRound() + diff + 1) % 2;
         return players[i];
     }
 
     public SColor getCurrentColor() {
-        int diff = game.getHandicap() == 0 ? 0 : 1;
+        int diff = gameInfo.getHandicap() == 0 ? 0 : 1;
         int i = (history.getRound() + diff) % 2;
         return SColor.values()[i];
     }

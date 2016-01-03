@@ -10,7 +10,7 @@ import android.widget.*;
 import org.androidannotations.annotations.*;
 
 import fr.narwhals.go.R;
-import fr.narwhals.go.domain.Game.Rule;
+import fr.narwhals.go.domain.GameInfo.Rule;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Section.SColor;
 

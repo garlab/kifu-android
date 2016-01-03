@@ -14,8 +14,8 @@ import fr.narwhals.go.R;
 import fr.narwhals.go.ai.AI;
 import fr.narwhals.go.ai.OffensiveAI;
 import fr.narwhals.go.bean.SgfHandler;
+import fr.narwhals.go.domain.GameInfo;
 import fr.narwhals.go.domain.Game;
-import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.GoEvent;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Point;
@@ -29,10 +29,10 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @Extra int size;
     @Extra int handicap;
-    @Extra Game.Rule rule;
+    @Extra GameInfo.Rule rule;
     @Extra Player blackPlayer;
     @Extra Player whitePlayer;
-    Go go;
+    private Game game;
 
     @Bean Config config;
     @Bean SgfHandler sgfHandler;
@@ -46,22 +46,22 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @ViewById Button lastButton;
     @ViewById LinearLayout gobanLayout;
 
-    final LinearLayout[] barsView = new LinearLayout[Go.State.values().length];
+    final LinearLayout[] barsView = new LinearLayout[Game.State.values().length];
 
     BoardView grid;
 
     @AfterExtras
     void initGo() {
-        this.go = new Go(size, handicap, rule, blackPlayer, whitePlayer, this);
+        this.game = new Game(size, handicap, rule, blackPlayer, whitePlayer, this);
     }
 
     @AfterInject
     void initBots() {
         if (blackPlayer.getAi()) {
-            bots[0] = new OffensiveAI(go, blackPlayer, config.aiPass());
+            bots[0] = new OffensiveAI(game, blackPlayer, config.aiPass());
         }
         if (whitePlayer.getAi()) {
-            bots[1] = new OffensiveAI(go, whitePlayer, config.aiPass());
+            bots[1] = new OffensiveAI(game, whitePlayer, config.aiPass());
         }
     }
 
@@ -73,17 +73,17 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @AfterViews
     void initViews() {
-        this.barsView[Go.State.OnGoing.ordinal()] = (LinearLayout) findViewById(R.id.ongoing_bar);
-        this.barsView[Go.State.Territories.ordinal()] = (LinearLayout) findViewById(R.id.territory_bar);
-        this.barsView[Go.State.Over.ordinal()] = (LinearLayout) findViewById(R.id.over_bar);
-        this.barsView[Go.State.Review.ordinal()] = (LinearLayout) findViewById(R.id.review_bar);
+        this.barsView[Game.State.OnGoing.ordinal()] = (LinearLayout) findViewById(R.id.ongoing_bar);
+        this.barsView[Game.State.Territories.ordinal()] = (LinearLayout) findViewById(R.id.territory_bar);
+        this.barsView[Game.State.Over.ordinal()] = (LinearLayout) findViewById(R.id.over_bar);
+        this.barsView[Game.State.Review.ordinal()] = (LinearLayout) findViewById(R.id.review_bar);
 
         int gobanSize = getScreenSize();
 
         gobanLayout.getLayoutParams().height = gobanSize;
         gobanLayout.getLayoutParams().width = gobanSize;
 
-        grid = new BoardView(this, config, go, gobanSize);
+        grid = new BoardView(this, config, game, gobanSize);
         gobanLayout.addView(grid);
 
         toolBar.setTitle(blackPlayer.getName() + " vs " + whitePlayer.getName());
@@ -93,11 +93,11 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @OptionsItem
     void actionSave() {
-        sgfHandler.save(go);
+        sgfHandler.save(game);
     }
 
     @Override
-    public void onStateChange(Go.State oldState, Go.State newState) {
+    public void onStateChange(Game.State oldState, Game.State newState) {
         barsView[oldState.ordinal()].setVisibility(View.GONE);
         barsView[newState.ordinal()].setVisibility(View.VISIBLE);
         switch (newState) {
@@ -112,7 +112,7 @@ public class GameActivity extends BaseActivity implements GoEvent {
                 updateReviewButtons();
                 break;
             case Over:
-                toolBar.setSubtitle(go.getResult());
+                toolBar.setSubtitle(game.getResult());
                 break;
         }
         grid.invalidate();
@@ -120,15 +120,15 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @Override
     public void onNextTurn() {
-        switch (go.getState()) {
+        switch (game.getState()) {
             case OnGoing:
                 showCurrentPlayer();
-                if (go.getCurrentPlayer().getAi()) {
-                    Stone stone = bots[go.getCurrentColor().ordinal()].getMove();
+                if (game.getCurrentPlayer().getAi()) {
+                    Stone stone = bots[game.getCurrentColor().ordinal()].getMove();
                     if (stone.getPoint() == Point.PASS) {
-                        go.pass();
+                        game.pass();
                     } else {
-                        go.move(stone);
+                        game.move(stone);
                     }
                     grid.invalidate();
                 }
@@ -142,19 +142,19 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @Override
     public void onScoreChange() {
         // TODO: Display captured stones somewhere
-        int blackScore = go.history.score.getCapturedStones(SColor.BLACK)
-                + go.history.score.getMarkedDead(SColor.WHITE);
-        int whiteScore = go.history.score.getCapturedStones(SColor.WHITE)
-                + go.history.score.getMarkedDead(SColor.BLACK);
+        int blackScore = game.history.score.getCapturedStones(SColor.BLACK)
+                + game.history.score.getMarkedDead(SColor.WHITE);
+        int whiteScore = game.history.score.getCapturedStones(SColor.WHITE)
+                + game.history.score.getMarkedDead(SColor.BLACK);
         //scoresView[SColor.BLACK.ordinal()].setText("(" + blackScore + ")");
         //scoresView[SColor.WHITE.ordinal()].setText("(" + whiteScore + ")");
     }
 
     @Click
     void firstButtonClicked() {
-        if (go.history.hasPrev()) {
-            go.goban.clear();
-            go.history.goFirst();
+        if (game.history.hasPrev()) {
+            game.goban.clear();
+            game.history.goFirst();
             updateReviewButtons();
             grid.invalidate();
         }
@@ -162,8 +162,8 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @Click
     void previousButtonClicked() {
-        if (go.history.hasPrev()) {
-            go.history.undo();
+        if (game.history.hasPrev()) {
+            game.history.undo();
             updateReviewButtons();
             grid.invalidate();
         }
@@ -171,8 +171,8 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @Click
     void nextButtonClicked() {
-        if (go.history.hasNext()) {
-            go.history.playNext();
+        if (game.history.hasNext()) {
+            game.history.playNext();
             updateReviewButtons();
             grid.invalidate();
         }
@@ -180,8 +180,8 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @Click
     void lastButtonClicked() {
-        while (go.history.hasNext()) {
-            go.history.playNext();
+        while (game.history.hasNext()) {
+            game.history.playNext();
         }
         updateReviewButtons();
         grid.invalidate();
@@ -189,59 +189,59 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @Click
     void undoButtonClicked() {
-        if (go.history.hasPrev()) {
-            go.history.undo();
+        if (game.history.hasPrev()) {
+            game.history.undo();
             grid.invalidate();
         }
     }
 
     @Click
     public void passButtonClicked() {
-        go.pass();
+        game.pass();
         grid.invalidate();
     }
 
     @Click
     void giveUpButtonClicked() {
-        go.setEndOfGame(Go.EndOfGame.GiveUp);
+        game.setEndOfGame(Game.EndOfGame.GiveUp);
     }
 
     @Click
     void cancelButtonClicked() {
-        go.setState(Go.State.OnGoing);
+        game.setState(Game.State.OnGoing);
     }
 
     @Click
     void proceedButtonClicked() {
-        go.setEndOfGame(Go.EndOfGame.Standard);
+        game.setEndOfGame(Game.EndOfGame.Standard);
     }
 
     @Click
     void reviewButtonClicked() {
-        go.setState(Go.State.Review);
+        game.setState(Game.State.Review);
     }
 
     @Click
     void playAgainButtonClicked() {
         sgfHandler.initFileName();
-        go.clear();
+        game.clear();
     }
     
     void showCurrentPlayer() {
-        SColor color = go.getCurrentColor();
+        SColor color = game.getCurrentColor();
         toolBar.setLogo(color.equals(SColor.BLACK) ?
                 R.drawable.stone_black :
                 R.drawable.stone_white
         );
         toolBar.setLogoDescription(color.toString());
-        toolBar.setSubtitle(go.getCurrentPlayer().getName() + " to play");
+        toolBar.setSubtitle(game.getCurrentPlayer().getName() + " to play");
     }
 
     void updateReviewButtons() {
-        firstButton.setEnabled(go.history.hasPrev());
-        previousButton.setEnabled(go.history.hasPrev());
-        nextButton.setEnabled(go.history.hasNext());
-        lastButton.setEnabled(go.history.hasNext());
+        firstButton.setEnabled(game.history.hasPrev());
+        previousButton.setEnabled(game.history.hasPrev());
+        nextButton.setEnabled(game.history.hasNext());
+        lastButton.setEnabled(game.history.hasNext());
     }
 
     @SuppressWarnings("deprecation")

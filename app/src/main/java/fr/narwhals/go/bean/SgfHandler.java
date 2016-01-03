@@ -12,7 +12,7 @@ import org.androidannotations.annotations.*;
 import java.io.File;
 import java.io.IOException;
 
-import fr.narwhals.go.domain.Go;
+import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.sgf.SgfComposer;
 import fr.narwhals.go.util.FileUtil;
 
@@ -22,7 +22,7 @@ public class SgfHandler implements View.OnClickListener {
     protected @RootContext Context context;
     protected @ViewById LinearLayout gameLayout;
 
-    private Go game;
+    private Game game;
     private String fileName;
     private String fileContent;
 
@@ -31,7 +31,7 @@ public class SgfHandler implements View.OnClickListener {
         this.fileName = "kifu_" + System.currentTimeMillis() + ".sgf";
     }
 
-    public void save(Go game) {
+    public void save(Game game) {
         this.game = game;
         this.fileContent = null;
 

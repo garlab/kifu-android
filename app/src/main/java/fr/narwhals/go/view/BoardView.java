@@ -12,7 +12,7 @@ import java.util.List;
 
 import fr.narwhals.go.bean.Config;
 import fr.narwhals.go.R;
-import fr.narwhals.go.domain.Go;
+import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.Liberty;
 import fr.narwhals.go.domain.Move;
 import fr.narwhals.go.domain.Point;
@@ -41,17 +41,17 @@ public class BoardView extends View {
     private Bitmap whiteStoneDeadBitmap;
 
     private Config config;
-    private Go go;
+    private Game game;
     private Point currentPoint = null;
 
-    public BoardView(Context context, Config config, Go go, int screenSize) {
+    public BoardView(Context context, Config config, Game game, int screenSize) {
         super(context);
         setFocusable(true);
 
         this.config = config;
-        this.go = go;
+        this.game = game;
         this.screenSize = screenSize;
-        this.sectionSize = screenSize / go.game.getSize();
+        this.sectionSize = screenSize / game.gameInfo.getSize();
         this.shapeSize = sectionSize * 8 / 10;
         this.libertySize = sectionSize / 2;
 
@@ -67,29 +67,29 @@ public class BoardView extends View {
     }
 
     public void refreshScore() {
-        go.history.score.setStoneGroups(go.goban.getStoneGroups());
-        go.history.score.setTerritories(go.goban.getTerritories());
+        game.history.score.setStoneGroups(game.goban.getStoneGroups());
+        game.history.score.setTerritories(game.goban.getTerritories());
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent me) {
-        int x = (int) ((me.getX()) * go.game.getSize() / screenSize);
-        int y = (int) ((me.getY()) * go.game.getSize() / screenSize);
+        int x = (int) ((me.getX()) * game.gameInfo.getSize() / screenSize);
+        int y = (int) ((me.getY()) * game.gameInfo.getSize() / screenSize);
 
         Point point = currentPoint;
         currentPoint = null;
 
-        if (x < 0 || y < 0 || x >= go.game.getSize() || y >= go.game.getSize()) {
+        if (x < 0 || y < 0 || x >= game.gameInfo.getSize() || y >= game.gameInfo.getSize()) {
             return true;
         }
 
-        switch (go.getState()) {
+        switch (game.getState()) {
             case OnGoing:
             case Review:
                 if (me.getAction() == MotionEvent.ACTION_DOWN || me.getAction() == MotionEvent.ACTION_MOVE) {
                     currentPoint = new Point(x + 1, y + 1);
                 } else if (me.getAction() == MotionEvent.ACTION_UP) {
-                    go.tryMove(point);
+                    game.tryMove(point);
                 }
                 invalidate();
                 break;
@@ -97,7 +97,7 @@ public class BoardView extends View {
             case Territories:
                 if (me.getAction() == MotionEvent.ACTION_UP) {
                     point = new Point(x + 1, y + 1);
-                    Stone stone = go.goban.getStone(point);
+                    Stone stone = game.goban.getStone(point);
                     if (stone != null) {
                         stone.getStoneGroup().mark();
                         refreshScore();
@@ -114,40 +114,40 @@ public class BoardView extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        switch (go.getState()) {
+        switch (game.getState()) {
             case OnGoing:
             case Review:
-                Move move = go.history.getCurrentMove();
-                drawGrids(go.game.getSize(), canvas);
-                drawHoshis(go.game.getHoshis(), go.game.getSize(), canvas);
+                Move move = game.history.getCurrentMove();
+                drawGrids(game.gameInfo.getSize(), canvas);
+                drawHoshis(game.gameInfo.getHoshis(), game.gameInfo.getSize(), canvas);
                 if (currentPoint != null) {
-                    drawCross(currentPoint, go.game.getSize(), crossColorInvalid, canvas);
-                    drawStone(currentPoint, go.getCurrentColor(), go.game.getSize(), canvas);
+                    drawCross(currentPoint, game.gameInfo.getSize(), crossColorInvalid, canvas);
+                    drawStone(currentPoint, game.getCurrentColor(), game.gameInfo.getSize(), canvas);
                 }
                 if (config.showLastMove()) {
-                    drawHint(move.getStone(), go.game.getSize(), canvas);
+                    drawHint(move.getStone(), game.gameInfo.getSize(), canvas);
                 }
-                List<Stone> stones = go.goban.getStones();
-                drawStones(stones, go.game.getSize(), canvas);
+                List<Stone> stones = game.goban.getStones();
+                drawStones(stones, game.gameInfo.getSize(), canvas);
                 if (config.numberMoves()) {
                     // TODO use history instead and remove the round property in stone
-                    drawNumbers(stones, go.game.getSize(), canvas);
+                    drawNumbers(stones, game.gameInfo.getSize(), canvas);
                 }
-                drawShapes(move, go.game.getSize(), canvas);
+                drawShapes(move, game.gameInfo.getSize(), canvas);
                 if (config.tagVariations()) {
-                    drawPaths(go.history.getChildren(), go.game.getSize(), canvas);
+                    drawPaths(game.history.getChildren(), game.gameInfo.getSize(), canvas);
                 }
                 if (move.getKo() != Point.NO_KO) {
-                    drawKo(move.getKo(), go.game.getSize(), canvas);
+                    drawKo(move.getKo(), game.gameInfo.getSize(), canvas);
                 }
                 break;
 
             case Territories:
             case Over:
-                drawGrids(go.game.getSize(), canvas);
-                drawHoshis(go.game.getHoshis(), go.game.getSize(), canvas);
-                drawStoneGroups(go.goban.getStoneGroups(), go.game.getSize(), canvas);
-                drawTerritories(go.goban.getTerritories(), go.game.getSize(), canvas);
+                drawGrids(game.gameInfo.getSize(), canvas);
+                drawHoshis(game.gameInfo.getHoshis(), game.gameInfo.getSize(), canvas);
+                drawStoneGroups(game.goban.getStoneGroups(), game.gameInfo.getSize(), canvas);
+                drawTerritories(game.goban.getTerritories(), game.gameInfo.getSize(), canvas);
                 break;
         }
     }

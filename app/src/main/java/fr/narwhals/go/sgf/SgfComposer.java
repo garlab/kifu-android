@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import fr.narwhals.go.domain.GameInfo;
 import fr.narwhals.go.domain.Game;
-import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.History;
 import fr.narwhals.go.domain.Move;
 import fr.narwhals.go.domain.Player;
@@ -20,7 +20,7 @@ public class SgfComposer {
         this.sb = new StringBuilder();
     }
 
-    public SgfComposer compose(Go game) {
+    public SgfComposer compose(Game game) {
         append(game);
         return this;
     }
@@ -29,9 +29,9 @@ public class SgfComposer {
         return sb.toString();
     }
 
-    private void append(Go game) {
+    private void append(Game game) {
         appendHeader();
-        append(game.game);
+        append(game.gameInfo);
         for (Player player : game.players) {
             append(player);
         }
@@ -109,24 +109,24 @@ public class SgfComposer {
         append("P" + player.getColor().getKey(), player.getName());
     }
 
-    private void append(Game game) {
-        append("RU", game.getRule().toString());
-        append("SZ", game.getSize(), 19);
-        append("KM", game.getKomi());
-        append("TM", game.getTime(), 0);
-        append("HA", game.getHandicap(), 0);
+    private void append(GameInfo gameInfo) {
+        append("RU", gameInfo.getRule().toString());
+        append("SZ", gameInfo.getSize(), 19);
+        append("KM", gameInfo.getKomi());
+        append("TM", gameInfo.getTime(), 0);
+        append("HA", gameInfo.getHandicap(), 0);
         //append("AB", game.getHandicaps());
 
-        append("GN", game.getName());
-        append("DT", game.getDates());
-        append("CP", game.getCopyright());
-        append("GC", game.getComment());
-        append("EV", game.getEvent());
-        append("RO", game.getRound());
-        append("PC", game.getPlace());
-        append("SO", game.getSource());
-        append("AN", game.getAnnotation());
-        append("US", game.getUser());
+        append("GN", gameInfo.getName());
+        append("DT", gameInfo.getDates());
+        append("CP", gameInfo.getCopyright());
+        append("GC", gameInfo.getComment());
+        append("EV", gameInfo.getEvent());
+        append("RO", gameInfo.getRound());
+        append("PC", gameInfo.getPlace());
+        append("SO", gameInfo.getSource());
+        append("AN", gameInfo.getAnnotation());
+        append("US", gameInfo.getUser());
     }
 
     private void append(History history) {
