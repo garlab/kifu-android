@@ -1,62 +1,19 @@
 package fr.narwhals.go.util;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class FileUtil {
-    static final String LOG_TAG = "FileUtil";
-    static final String SGF_DIR = "sgf";
 
-    public static Intent indexFile(File file) {
-        // TODO: Find a workaround for modified files, since this will only work for newly created files
-        // Maybe remove the file first, using getContentResolver().delete(uri, null, null)
-        return new Intent(
-                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
-                Uri.fromFile(file)
-        );
-    }
-
-    public static File saveSgf(String fileName, String content) {
-        if (!isExternalStorageWritable()) {
-            Log.w(LOG_TAG, "External storage is not writable");
-            return null;
-        }
-
-        File sgfFile = getSgfStorageFile(fileName);
-        if (sgfFile == null) {
-            Log.w(LOG_TAG, "Can't create the sgf file");
-            return null;
-        }
-
-        try {
-            saveSgf(sgfFile, content);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Can't write in the sgf file", e);
-            return null;
-        }
-
-        return sgfFile;
-    }
-
-    private static void saveSgf(File sgfFile, String content) throws IOException {
-        byte[] bytes = content.getBytes();
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(sgfFile);
-            fos.write(bytes);
-        } finally {
-            if (fos != null) {
-                fos.close();
-            }
-        }
+    public static File getDocumentsDirectory() {
+        return Build.VERSION.SDK_INT >= 19 ?
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) :
+                new File(Environment.getExternalStorageDirectory() + "/Documents");
     }
 
     public static boolean isExternalStorageWritable() {
@@ -70,18 +27,17 @@ public class FileUtil {
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
     }
 
-    public static File getSgfStorageDirectory() {
-        return new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOCUMENTS), SGF_DIR);
-    }
-
-    public static File getSgfStorageFile(String fileName) {
-        File sgfDir = getSgfStorageDirectory();
-        if (!sgfDir.mkdirs() && !sgfDir.isDirectory()) {
-            return null;
+    public static void save(File file, String content) throws IOException {
+        byte[] bytes = content.getBytes();
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file);
+            fos.write(bytes);
+        } finally {
+            if (fos != null) {
+                fos.close();
+            }
         }
-
-        return new File(sgfDir, fileName);
     }
 
     private static int readInt(InputStream in) throws IOException {

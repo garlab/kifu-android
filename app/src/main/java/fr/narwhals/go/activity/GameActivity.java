@@ -11,11 +11,13 @@ import android.widget.Toast;
 import org.androidannotations.annotations.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import fr.narwhals.go.bean.Config;
 import fr.narwhals.go.R;
 import fr.narwhals.go.ai.AI;
 import fr.narwhals.go.ai.OffensiveAI;
+import fr.narwhals.go.bean.SgfHandler;
 import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.Go;
 import fr.narwhals.go.domain.GoEvent;
@@ -23,8 +25,6 @@ import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Point;
 import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.domain.Stone;
-import fr.narwhals.go.sgf.SgfComposer;
-import fr.narwhals.go.util.FileUtil;
 import fr.narwhals.go.view.BoardView;
 
 @EActivity(R.layout.game)
@@ -36,10 +36,10 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @Extra Game.Rule rule;
     @Extra Player blackPlayer;
     @Extra Player whitePlayer;
-    String fileName;
     Go go;
 
     @Bean Config config;
+    @Bean SgfHandler sgfHandler;
     final AI bots[] = new AI[2];
 
     @ViewById Button undoButton;
@@ -57,7 +57,6 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @AfterExtras
     void initGo() {
         this.go = new Go(size, handicap, rule, blackPlayer, whitePlayer, this);
-        this.fileName = "kifu_" + System.currentTimeMillis() + ".sgf";
     }
 
     @AfterInject
@@ -98,12 +97,10 @@ public class GameActivity extends BaseActivity implements GoEvent {
 
     @OptionsItem
     void actionSave() {
-        String sgf = new SgfComposer(go).toString();
-        File sgfFile = FileUtil.saveSgf(fileName, sgf);
-        if (sgfFile != null) {
+        try {
+            File sgfFile = sgfHandler.save(go);
             Toast.makeText(this, "Game saved at " + sgfFile, Toast.LENGTH_LONG).show();
-            sendBroadcast(FileUtil.indexFile(sgfFile));
-        } else {
+        } catch (IOException e) {
             // TODO: use a snackbar with retry button
             Toast.makeText(this, "Error while saving game", Toast.LENGTH_LONG).show();
         }
