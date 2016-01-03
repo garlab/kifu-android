@@ -37,12 +37,17 @@ public class OffensiveAI implements AI {
         }
     }
 
-    public Player getPlayer() {
-        return player;
+    @Override
+    public void play() {
+        Stone stone = getMove();
+        if (stone.getPoint() == Point.PASS) {
+            game.pass();
+        } else {
+            game.move(stone);
+        }
     }
 
-    @Override
-    public Stone getMove() {
+    private Stone getMove() {
         Stone prev = game.history.getCurrentMove().getStone();
         if (aiMustPass && prev.getPoint() == Point.PASS) {
             return new Stone(player.getColor(), Point.PASS, game.goban);

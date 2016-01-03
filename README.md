@@ -28,8 +28,7 @@
 
 ## Model
 
-- Rename Game GameInfo
-- Move winner and endOfGame in GameInfo
+- Move endOfGame, winner and score in GameInfo
 
 ## Custom ruleSet
 

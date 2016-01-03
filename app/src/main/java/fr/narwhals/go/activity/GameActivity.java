@@ -124,12 +124,7 @@ public class GameActivity extends BaseActivity implements GoEvent {
             case OnGoing:
                 showCurrentPlayer();
                 if (game.getCurrentPlayer().getAi()) {
-                    Stone stone = bots[game.getCurrentColor().ordinal()].getMove();
-                    if (stone.getPoint() == Point.PASS) {
-                        game.pass();
-                    } else {
-                        game.move(stone);
-                    }
+                    bots[game.getCurrentColor().ordinal()].play();
                     grid.invalidate();
                 }
                 break;

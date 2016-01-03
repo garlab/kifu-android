@@ -118,8 +118,7 @@ public class BoardView extends View {
             case OnGoing:
             case Review:
                 Move move = game.history.getCurrentMove();
-                drawGrids(game.gameInfo.getSize(), canvas);
-                drawHoshis(game.gameInfo.getHoshis(), game.gameInfo.getSize(), canvas);
+                drawBoard(canvas);
                 if (currentPoint != null) {
                     drawCross(currentPoint, game.gameInfo.getSize(), crossColorInvalid, canvas);
                     drawStone(currentPoint, game.getCurrentColor(), game.gameInfo.getSize(), canvas);
@@ -130,7 +129,7 @@ public class BoardView extends View {
                 List<Stone> stones = game.goban.getStones();
                 drawStones(stones, game.gameInfo.getSize(), canvas);
                 if (config.numberMoves()) {
-                    // TODO use history instead and remove the round property in stone
+                    // TODO: use history instead and remove the round property in stone
                     drawNumbers(stones, game.gameInfo.getSize(), canvas);
                 }
                 drawShapes(move, game.gameInfo.getSize(), canvas);
@@ -144,12 +143,16 @@ public class BoardView extends View {
 
             case Territories:
             case Over:
-                drawGrids(game.gameInfo.getSize(), canvas);
-                drawHoshis(game.gameInfo.getHoshis(), game.gameInfo.getSize(), canvas);
+                drawBoard(canvas);
                 drawStoneGroups(game.goban.getStoneGroups(), game.gameInfo.getSize(), canvas);
                 drawTerritories(game.goban.getTerritories(), game.gameInfo.getSize(), canvas);
                 break;
         }
+    }
+
+    private void drawBoard(Canvas canvas) {
+        drawGrids(game.gameInfo.getSize(), canvas);
+        drawHoshis(game.gameInfo.getHoshis(), game.gameInfo.getSize(), canvas);
     }
 
     private void drawGrids(int size, Canvas canvas) {
