@@ -152,7 +152,7 @@ public class BoardView extends View {
 
     private void drawBoard(Canvas canvas) {
         drawGrids(game.gameInfo.getSize(), canvas);
-        drawHoshis(game.gameInfo.getHoshis(), game.gameInfo.getSize(), canvas);
+        drawHoshis(game.goban.getHoshis(), game.gameInfo.getSize(), canvas);
     }
 
     private void drawGrids(int size, Canvas canvas) {
@@ -169,7 +169,7 @@ public class BoardView extends View {
         }
     }
 
-    private void drawHoshis(List<Point> hoshis, int size, Canvas canvas) {
+    private void drawHoshis(Point[] hoshis, int size, Canvas canvas) {
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.BLACK);
         int hoshiSize = screenSize / (130); // TODO: choisir une valeur

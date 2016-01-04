@@ -72,7 +72,7 @@ public class OffensiveAI implements AI {
 
     public Point getBestCorner() {
         boolean isBest;
-        for (Point hoshi : game.gameInfo.getHoshis()) {
+        for (Point hoshi : game.goban.getHoshis()) {
             isBest = true;
             if (game.goban.isLiberty(hoshi)) {
                 for (Section neighbor : game.goban.getNeighbors(hoshi)) {
