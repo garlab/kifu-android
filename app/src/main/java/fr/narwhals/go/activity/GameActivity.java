@@ -92,6 +92,7 @@ public class GameActivity extends BaseActivity implements GoEvent {
     }
 
     @OptionsItem
+    @Background(serial = "save")
     void actionSave() {
         sgfHandler.save(game);
     }

@@ -25,10 +25,12 @@
 
 - display cross in another color when move is valid
 - handle square/circle/triangle etc
+- Stones fade out on capture, fadein on review
 
 ## Model
 
 - Move endOfGame, winner and score in GameInfo
+- Don't compute territories when match is given up
 
 ## Custom ruleSet
 
