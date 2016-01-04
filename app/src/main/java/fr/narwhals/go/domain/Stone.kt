@@ -40,6 +40,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban) : Section(color, 
             val liberties = liberties
             for (neighbor in sameColorGroupNeighbors) {
                 for (liberty in neighbor.liberties) {
+                    // TODO: replace by a Set
                     if (!liberties.contains(liberty)) {
                         liberties.add(liberty)
                     }

@@ -106,6 +106,7 @@ public class GameActivity extends BaseActivity implements GoEvent {
                 showCurrentPlayer();
                 break;
             case Territories:
+                game.goban.comptuteTerritories();
                 toolBar.setSubtitle("Select dead stones");
                 break;
             case Review:

@@ -12,7 +12,7 @@ public class Goban implements Serializable {
 
     private final Point[] hoshis;
     private final Section[][] board;
-    private transient List<Territory> territories;
+    private transient List<Territory> territories = Collections.emptyList();
     private transient List<StoneGroup> stoneGroups;
 
     public Goban(int size) {
@@ -34,7 +34,7 @@ public class Goban implements Serializable {
                 board[i][j] = new Liberty(SColor.NONE, new Point(i, j), this);
             }
         }
-        territories = null;
+        territories = Collections.emptyList();
         stoneGroups = null;
     }
 
@@ -152,14 +152,11 @@ public class Goban implements Serializable {
     // Territory
 
     public List<Territory> getTerritories() {
-        if (territories == null) {
-            comptuteTerritories();
-        }
         return territories;
     }
 
-    private void comptuteTerritories() {
-        this.territories = new LinkedList<Territory>();
+    public void comptuteTerritories() {
+        this.territories = new LinkedList<>();
         for (Liberty liberty : getAllLiberties()) {
             if (!liberty.hasTerritory()) {
                 Territory territory = new Territory();
