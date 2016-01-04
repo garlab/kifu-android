@@ -3,7 +3,7 @@ package fr.narwhals.go.domain
 import java.io.Serializable
 
 /* Base commune aux Stones et Liberties */
-open class Section(var color: Section.SColor, val point: Point, protected val goban: Goban?) : Serializable {
+open class Section(var color: Section.SColor, val point: Point, protected val goban: Goban) : Serializable {
 
     enum class SColor {
         BLACK, WHITE, BORDER, SHARED, NONE;
@@ -25,7 +25,7 @@ open class Section(var color: Section.SColor, val point: Point, protected val go
         get() = color.opponentColor
 
     fun add() {
-        goban!!.set(this)
+        goban.set(this)
     }
 
     override fun toString(): String {

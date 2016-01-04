@@ -3,7 +3,7 @@ package fr.narwhals.go.domain
 import java.util.ArrayList
 import java.util.LinkedList
 
-class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color, point, goban) {
+class Stone(color: Section.SColor, point: Point, goban: Goban) : Section(color, point, goban) {
 
     /**
      * Utilisé par StoneGroup lors des merge
@@ -24,7 +24,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
     val liberties: MutableList<Liberty>
         get() {
             val liberties = ArrayList<Liberty>(4)
-            for (neighbor in goban!!.getNeighbors(point)) {
+            for (neighbor in goban.getNeighbors(point)) {
                 if (neighbor is Liberty) {
                     liberties.add(neighbor)
                 }
@@ -45,7 +45,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
                     }
                 }
             }
-            liberties.remove(goban!!.getLiberty(point))
+            liberties.remove(goban.getLiberty(point))
             return liberties
         }
 
@@ -70,7 +70,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
     val sameColorNeighbors: List<Stone>
         get() {
             val neighbors = ArrayList<Stone>(4)
-            for (section in goban!!.getNeighbors(point)) {
+            for (section in goban.getNeighbors(point)) {
                 if (section is Stone) {
                     if (section.color == color) {
                         neighbors.add(section)
@@ -85,7 +85,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
     val sameColorGroupNeighbors: List<StoneGroup>
         get() {
             val neighbors = ArrayList<StoneGroup>(4)
-            for (section in goban!!.getNeighbors(point)) {
+            for (section in goban.getNeighbors(point)) {
                 if (section is Stone) {
                     if (section.color == color && !neighbors.contains(section.stoneGroup)) {
                         neighbors.add(section.stoneGroup!!)
@@ -98,7 +98,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
     val groupNeighbors: List<StoneGroup>
         get() {
             val neighbors = ArrayList<StoneGroup>(4) //TODO replace by a Set
-            for (section in goban!!.getNeighbors(point)) {
+            for (section in goban.getNeighbors(point)) {
                 if (section is Stone) {
                     if (!neighbors.contains(section.stoneGroup)) {
                         neighbors.add(section.stoneGroup!!)
@@ -126,7 +126,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
 
     val isMoveValid: Boolean
         get() {
-            if (!goban!!.isLiberty(point)) {
+            if (!goban.isLiberty(point)) {
                 return false
             } else {
                 return actualLiberties.size > 0 || captureValue > 0
@@ -158,7 +158,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
      * enemis adjacent, et de capturer ceux dont les libertés == 0
      */
     fun removeNeighborLiberty() {
-        val liberty = goban!!.getLiberty(point)
+        val liberty = goban.getLiberty(point)
         for (neighbor in groupNeighbors) {
             if (neighbor.color != color) {
                 neighbor.remove(liberty)
@@ -186,7 +186,7 @@ class Stone(color: Section.SColor, point: Point, goban: Goban?) : Section(color,
      * adjacent du au retrait de la pierre
      */
     fun addNeighborLiberty() {
-        val liberty = Liberty(Section.SColor.NONE, point, goban!!)
+        val liberty = Liberty(Section.SColor.NONE, point, goban)
         for (neighbor in groupNeighbors) {
             neighbor.add(liberty)
         }
