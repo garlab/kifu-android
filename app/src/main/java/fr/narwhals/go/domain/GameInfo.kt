@@ -24,6 +24,8 @@ class GameInfo(val size: Int, val handicap: Int, val rule: GameInfo.Rule) : Seri
     var annotation: String? = null
     var user: String? = null
 
+    var score: Float = 0f;
+
     val komi: Double
         get() = if (handicap == 0) 0.5 else rule.komi
 }

@@ -18,9 +18,7 @@ import fr.narwhals.go.domain.GameInfo;
 import fr.narwhals.go.domain.Game;
 import fr.narwhals.go.domain.GoEvent;
 import fr.narwhals.go.domain.Player;
-import fr.narwhals.go.domain.Point;
 import fr.narwhals.go.domain.Section.SColor;
-import fr.narwhals.go.domain.Stone;
 import fr.narwhals.go.view.BoardView;
 
 @EActivity(R.layout.game_layout)
