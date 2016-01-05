@@ -109,14 +109,14 @@ public class Game implements Serializable {
     }
 
     public void tryMove(Point point) {
-        Stone stone = new Stone(getCurrentColor(), point, goban);
+        Stone stone = new Stone(history.getRound(), getCurrentColor(), point, goban);
         if (canMove(stone)) {
             move(stone);
         }
     }
 
     public void pass() {
-        Stone pass = new Stone(getCurrentColor(), Point.PASS, goban);
+        Stone pass = new Stone(history.getRound(), getCurrentColor(), Point.PASS, goban);
         if (history.hasPassed() && getState() == State.OnGoing) {
             setState(State.Territories);
         }
@@ -128,7 +128,7 @@ public class Game implements Serializable {
         // TODO: add State Handicap in place of Ongoing when rule = chinese
         List<Stone> handicaps = new ArrayList<Stone>(gameInfo.getHandicap());
         for (Point point : getHandicaps(handicap, hoshis)) {
-            handicaps.add(new Stone(SColor.BLACK, point, goban));
+            handicaps.add(new Stone(-1, SColor.BLACK, point, goban));
         }
         return handicaps;
     }

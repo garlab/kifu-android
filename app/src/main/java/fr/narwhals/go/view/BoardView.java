@@ -8,6 +8,9 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EView;
+
 import java.util.List;
 
 import fr.narwhals.go.bean.Config;
@@ -22,33 +25,37 @@ import fr.narwhals.go.domain.StoneGroup;
 import fr.narwhals.go.domain.Territory;
 import fr.narwhals.go.activity.H;
 
+@EView
 public class BoardView extends View {
     private Paint paint = new Paint();
-
-    private final int screenSize;
-    private final int sectionSize;
-    private final int shapeSize;
-    private final int libertySize;
 
     private final int crossColorValid = Color.rgb(0, 0, 200);
     private final int crossColorInvalid = Color.rgb(200, 0, 0);
     private final int textColor = Color.rgb(60, 44, 23); // 3C2C17
     private final int koColor = Color.rgb(200, 110, 15);
 
+    @Bean Config config;
+
+    private int screenSize;
+    private int sectionSize;
+    private int shapeSize;
+    private int libertySize;
+
     private Bitmap blackStoneBitmap;
     private Bitmap whiteStoneBitmap;
     private Bitmap blackStoneDeadBitmap;
     private Bitmap whiteStoneDeadBitmap;
 
-    private Config config;
     private Game game;
     private Point currentPoint = null;
 
-    public BoardView(Context context, Config config, Game game, int screenSize) {
+    public BoardView(Context context) {
         super(context);
+    }
+
+    public void init(Game game, int screenSize) {
         setFocusable(true);
 
-        this.config = config;
         this.game = game;
         this.screenSize = screenSize;
         this.sectionSize = screenSize / game.gameInfo.getSize();
@@ -207,9 +214,13 @@ public class BoardView extends View {
     }
 
     private void drawNumbers(List<Stone> stones, int size, Canvas canvas) {
+        paint.setStyle(Paint.Style.FILL);
+        paint.setStrokeWidth(1);
         for (Stone stone : stones) {
             if (stone.getRound() != -1) {
-                drawNumber(stone, size, canvas);
+                String round = String.valueOf(stone.getRound() + 1);
+                paint.setColor(stone.getColor() == Section.SColor.BLACK ? Color.WHITE : Color.BLACK);
+                drawLabel(stone.getPoint(), round, size, canvas);
             }
         }
     }
@@ -226,14 +237,6 @@ public class BoardView extends View {
         int top = (point.getY() - 1) * screenSize / size;
         Bitmap bitmap = color.equals(Section.SColor.BLACK) ? blackStoneDeadBitmap : whiteStoneDeadBitmap;
         canvas.drawBitmap(bitmap, left, top, paint);
-    }
-
-    private void drawNumber(Stone stone, int size, Canvas canvas) {
-        String round = String.valueOf(stone.getRound());
-        paint.setColor(stone.getColor() == Section.SColor.BLACK ? Color.WHITE : Color.BLACK);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setStrokeWidth(1);
-        drawLabel(stone.getPoint(), round, size, canvas);
     }
 
     private void drawShapes(Move move, int size, Canvas canvas) {
@@ -331,9 +334,8 @@ public class BoardView extends View {
     private void drawLabel(Point point, String label, int size, Canvas canvas) {
         int left = screenSize / (2 * size) + (point.getX() - 1) * screenSize / size;
         int top = (point.getY()) * screenSize / size - sectionSize / 8;
-
-        // TODO: Adapter la taille proprement
-        int diff = (label.length() - 1) * 12;
+        
+        int diff = Math.max(label.length() - 1, 1) * 12;
         paint.setTextSize(sectionSize - diff);
         paint.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(label, left, top - diff / 2, paint);

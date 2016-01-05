@@ -13,7 +13,7 @@
 
 - add a margin between board and appbar or enlarge goban
 - reduce size and add margin around stone in appbar
-- show a dialog when clicking on save
+- change appbar color, so that it is different from background
 
 ## MainActivity
 

@@ -20,6 +20,7 @@ import fr.narwhals.go.domain.GoEvent;
 import fr.narwhals.go.domain.Player;
 import fr.narwhals.go.domain.Section.SColor;
 import fr.narwhals.go.view.BoardView;
+import fr.narwhals.go.view.BoardView_;
 
 @EActivity(R.layout.game_layout)
 @OptionsMenu(R.menu.menu_game)
@@ -32,7 +33,6 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @Extra Player whitePlayer;
     private Game game;
 
-    @Bean Config config;
     @Bean SgfHandler sgfHandler;
     final AI bots[] = new AI[2];
 
@@ -56,10 +56,10 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @AfterInject
     void initBots() {
         if (blackPlayer.getAi()) {
-            bots[0] = new OffensiveAI(game, blackPlayer, config.aiPass());
+            bots[0] = new OffensiveAI(game, blackPlayer, true);
         }
         if (whitePlayer.getAi()) {
-            bots[1] = new OffensiveAI(game, whitePlayer, config.aiPass());
+            bots[1] = new OffensiveAI(game, whitePlayer, true);
         }
     }
 
@@ -81,7 +81,8 @@ public class GameActivity extends BaseActivity implements GoEvent {
         gobanLayout.getLayoutParams().height = gobanSize;
         gobanLayout.getLayoutParams().width = gobanSize;
 
-        grid = new BoardView(this, config, game, gobanSize);
+        grid = BoardView_.build(this);
+        grid.init(game, gobanSize);
         gobanLayout.addView(grid);
 
         toolBar.setTitle(blackPlayer.getName() + " vs " + whitePlayer.getName());
@@ -137,12 +138,6 @@ public class GameActivity extends BaseActivity implements GoEvent {
     @Override
     public void onScoreChange() {
         // TODO: Display captured stones somewhere
-        int blackScore = game.history.score.getCapturedStones(SColor.BLACK)
-                + game.history.score.getMarkedDead(SColor.WHITE);
-        int whiteScore = game.history.score.getCapturedStones(SColor.WHITE)
-                + game.history.score.getMarkedDead(SColor.BLACK);
-        //scoresView[SColor.BLACK.ordinal()].setText("(" + blackScore + ")");
-        //scoresView[SColor.WHITE.ordinal()].setText("(" + whiteScore + ")");
     }
 
     @Click

@@ -3,18 +3,13 @@ package fr.narwhals.go.domain
 import java.util.ArrayList
 import java.util.LinkedList
 
-class Stone(color: Section.SColor, point: Point, goban: Goban) : Section(color, point, goban) {
+class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) : Section(color, point, goban) {
 
     /**
      * Utilisé par StoneGroup lors des merge
      */
     var stoneGroup: StoneGroup? = null
     val capturedStones = LinkedList<Stone>()
-
-    /**
-     * Called by History, allow to number the moves
-     */
-    var round = -1
 
     // Liberties
 

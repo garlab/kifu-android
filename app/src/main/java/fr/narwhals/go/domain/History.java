@@ -106,7 +106,6 @@ public class History {
 	}
 
 	private void add(Stone stone) {
-		stone.setRound(round + 1);
 		Node node = getChild(stone);
 		if (node == null) {
 			node = new Node(stone, current);

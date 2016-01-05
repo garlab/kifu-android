@@ -50,7 +50,7 @@ public class OffensiveAI implements AI {
     private Stone getMove() {
         Stone prev = game.history.getCurrentMove().getStone();
         if (aiMustPass && prev.getPoint() == Point.PASS) {
-            return new Stone(player.getColor(), Point.PASS, game.goban);
+            return new Stone(game.history.getRound(), player.getColor(), Point.PASS, game.goban);
         }
 
         switch (strategy) {
@@ -60,14 +60,14 @@ public class OffensiveAI implements AI {
                     this.strategy = Strategy.NORMAL;
                     return getMove();
                 } else {
-                    return new Stone(player.getColor(), corner, game.goban);
+                    return new Stone(game.history.getRound(), player.getColor(), corner, game.goban);
                 }
             case NORMAL:
                 Value move = getMax();
                 return move.stone;
         }
 
-        return new Stone(player.getColor(), Point.PASS, game.goban);
+        return new Stone(game.history.getRound(), player.getColor(), Point.PASS, game.goban);
     }
 
     public Point getBestCorner() {
@@ -90,11 +90,11 @@ public class OffensiveAI implements AI {
     }
 
     public Value getMax() {
-        Value max = new Value(new Stone(player.getColor(), Point.PASS, game.goban));
+        Value max = new Value(new Stone(game.history.getRound(), player.getColor(), Point.PASS, game.goban));
         List<Liberty> liberties = game.goban.getShuffledLiberties();
 
         for (Section section : liberties) {
-            Stone stone = new Stone(player.getColor(), section.getPoint(), game.goban);
+            Stone stone = new Stone(game.history.getRound(), player.getColor(), section.getPoint(), game.goban);
             if (stone.isMoveValid() && !game.history.getCurrentMove().getKo().equals(stone.getPoint())) {
                 Value current = new Value(stone);
                 if (current.getSum() > max.getSum()) {
