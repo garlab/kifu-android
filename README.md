@@ -30,15 +30,7 @@
 ## Model
 
 - Move endOfGame, winner and score in GameInfo
-- Don't compute territories when match is given up
-
-## Custom ruleSet
-
-- komi value
-- super ko
-- handicap stones initial position
-- area score vs surface score
-- suicide allowed
+- Remove enum Rule, use RuleSet instead
 
 ## Sounds
 

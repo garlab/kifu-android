@@ -15,11 +15,6 @@ public class Game implements Serializable {
         None, Unknown, Standard, GiveUp, Forfeit, Time, Mushobu
     }
 
-    // TODO: move in Rule
-    public enum HandicapPlacement {
-        Fixed, Free
-    }
-
     private State state = State.OnGoing;
     private EndOfGame endOfGame = EndOfGame.None;
 
