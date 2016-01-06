@@ -334,7 +334,7 @@ public class BoardView extends View {
     private void drawLabel(Point point, String label, int size, Canvas canvas) {
         int left = screenSize / (2 * size) + (point.getX() - 1) * screenSize / size;
         int top = (point.getY()) * screenSize / size - sectionSize / 8;
-        
+
         int diff = Math.max(label.length() - 1, 1) * 12;
         paint.setTextSize(sectionSize - diff);
         paint.setTextAlign(Paint.Align.CENTER);

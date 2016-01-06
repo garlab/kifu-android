@@ -9,6 +9,8 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
      * Utilisé par StoneGroup lors des merge
      */
     var stoneGroup: StoneGroup? = null
+
+    // TODO: move into Move
     val capturedStones = LinkedList<Stone>()
 
     // Liberties
@@ -78,6 +80,7 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
 
     // StoneGroups
 
+    // TODO move: into stonegroup or goban
     val sameColorGroupNeighbors: List<StoneGroup>
         get() {
             val neighbors = ArrayList<StoneGroup>(4)
@@ -91,6 +94,7 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
             return neighbors
         }
 
+    // TODO move: into stonegroup or goban
     val groupNeighbors: List<StoneGroup>
         get() {
             val neighbors = ArrayList<StoneGroup>(4) //TODO replace by a Set
@@ -106,7 +110,7 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
 
     // Indicateurs
 
-    val captureValue: Int
+    private val captureValue: Int
         get() {
             var value = 0
             for (neighbor in groupNeighbors) {
@@ -117,6 +121,7 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
             return value
         }
 
+    // TODO: Move into stonegroup
     val isPotentialKo: Boolean
         get() = stoneGroup!!.stones.size == 1 && liberties.size == 1
 
@@ -142,10 +147,10 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
      * Methode appellée par put ou undo, pour poser une pierre qui avait été
      * capturée par le passé.
      */
-    fun reput() {
+    private fun reput() {
         removeNeighborLiberty()
         stoneGroup = StoneGroup(this)
-        add()
+        goban.set(this)
         stoneGroup!!.merge(sameColorGroupNeighbors)
     }
 
@@ -153,7 +158,7 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
      * Appellé par reput et merge Permet de supprimmer les libertées des groupes
      * enemis adjacent, et de capturer ceux dont les libertés == 0
      */
-    fun removeNeighborLiberty() {
+    private fun removeNeighborLiberty() {
         val liberty = goban.getLiberty(point)
         for (neighbor in groupNeighbors) {
             if (neighbor.color != color) {
@@ -169,7 +174,6 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
      * Appellé par history. Annule le coup précédent
      */
     fun undo() {
-        addNeighborLiberty()
         for (captured in capturedStones) {
             captured.reput()
         }
@@ -186,13 +190,14 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
         for (neighbor in groupNeighbors) {
             neighbor.add(liberty)
         }
-        liberty.add()
+        goban.set(liberty)
     }
 
     /**
      * Appellé par undo. Divise les groupes aprés le retrait d'une pierre
      * faisant la liaison.
      */
+    // TODO: move into stoneGroup
     private fun split() {
         for (neighbor in sameColorNeighbors) {
             if (neighbor.stoneGroup === stoneGroup) {

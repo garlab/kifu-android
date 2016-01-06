@@ -2,8 +2,7 @@ package fr.narwhals.go.domain
 
 import java.io.Serializable
 
-class Move(var stone: Stone? // B/W
-) : Serializable {
+class Move(var stone: Stone?) : Serializable {
     var ko = Point.NO_KO // KO
     var comment = "" // C
     var labels: List<Label>? = null // LB
