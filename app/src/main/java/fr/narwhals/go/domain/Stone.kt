@@ -114,7 +114,7 @@ class Stone(val round: Int, color: Section.SColor, point: Point, goban: Goban) :
         get() {
             var value = 0
             for (neighbor in groupNeighbors) {
-                if (neighbor.color == opponentColor && neighbor.liberties.size == 1) {
+                if (neighbor.color == color.opponentColor && neighbor.liberties.size == 1) {
                     value += neighbor.stones.size
                 }
             }

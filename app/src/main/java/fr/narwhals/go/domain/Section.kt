@@ -21,9 +21,6 @@ open class Section(var color: Section.SColor, val point: Point, protected val go
             get() = if (this == BLACK) "B" else "W"
     }
 
-    val opponentColor: SColor
-        get() = color.opponentColor
-
     override fun toString(): String {
         return "[point=$point, color=$color]"
     }
@@ -39,5 +36,11 @@ open class Section(var color: Section.SColor, val point: Point, protected val go
         if (point != other.point)
             return false
         return true
+    }
+
+    override fun hashCode(): Int{
+        var result = color.hashCode()
+        result += 31 * result + point.hashCode()
+        return result
     }
 }

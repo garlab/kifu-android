@@ -1,5 +1,6 @@
 package fr.narwhals.go.ai;
 
+import java.util.Collections;
 import java.util.List;
 
 import fr.narwhals.go.domain.GameInfo;
@@ -91,7 +92,7 @@ public class OffensiveAI implements AI {
 
     public Value getMax() {
         Value max = new Value(new Stone(game.history.getRound(), player.getColor(), Point.PASS, game.goban));
-        List<Liberty> liberties = game.goban.getShuffledLiberties();
+        List<Liberty> liberties = getShuffledLiberties();
 
         for (Section section : liberties) {
             Stone stone = new Stone(game.history.getRound(), player.getColor(), section.getPoint(), game.goban);
@@ -103,6 +104,12 @@ public class OffensiveAI implements AI {
             }
         }
         return max;
+    }
+
+    List<Liberty> getShuffledLiberties() {
+        List<Liberty> shuffledLiberties = game.goban.getAllLiberties();
+        Collections.shuffle(shuffledLiberties);
+        return shuffledLiberties;
     }
 
     static class Value {
@@ -133,7 +140,7 @@ public class OffensiveAI implements AI {
                         this.saveValue += groupNeighbor.getStones().size();
                         this.territoryValue += groupNeighbor.getStones().size();
                     }
-                } else if (groupNeighbor.getColor() == stone.getOpponentColor()) {
+                } else if (groupNeighbor.getColor() == stone.getColor().getOpponentColor()) {
                     if (groupNeighbor.getLiberties().size() == 1) {
                         this.captureValue += (double) (groupNeighbor.getStones().size());
                         this.territoryValue += groupNeighbor.getStones().size();

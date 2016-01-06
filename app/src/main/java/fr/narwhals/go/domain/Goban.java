@@ -18,7 +18,7 @@ public class Goban implements Serializable {
     public Goban(int size) {
         this.hoshis = getHoshis(size);
         this.board = new Section[size + 2][size + 2];
-        Section sentinel = new Section(SColor.BORDER, new Point(0, 0), this);
+        Section sentinel = new Section(SColor.BORDER, Point.SENTINEL, this);
         for (int i = 0; i < board.length; ++i) {
             board[0][i] = sentinel;
             board[board.length - 1][i] = sentinel;
@@ -79,7 +79,7 @@ public class Goban implements Serializable {
     // Stones
 
     public List<Stone> getStones() {
-        List<Stone> stones = new LinkedList<Stone>();
+        List<Stone> stones = new LinkedList<>();
         for (int i = 1; i < board.length - 1; ++i) {
             for (int j = 1; j < board.length - 1; ++j) {
                 if (board[i][j] instanceof Stone) {
@@ -101,7 +101,7 @@ public class Goban implements Serializable {
     // Liberties
 
     public List<Liberty> getAllLiberties() {
-        List<Liberty> allLiberties = new ArrayList<Liberty>();
+        List<Liberty> allLiberties = new ArrayList<>();
         for (int i = 1; i < board.length - 1; ++i) {
             for (int j = 1; j < board.length - 1; ++j) {
                 if (board[i][j] instanceof Liberty) {
@@ -110,12 +110,6 @@ public class Goban implements Serializable {
             }
         }
         return allLiberties;
-    }
-
-    public List<Liberty> getShuffledLiberties() {
-        List<Liberty> shuffledLiberties = getAllLiberties();
-        Collections.shuffle(shuffledLiberties);
-        return shuffledLiberties;
     }
 
     public Liberty getLiberty(Point point) {
@@ -141,7 +135,7 @@ public class Goban implements Serializable {
 
     private void computeStoneGroups() {
         // TODO replace by a Set
-        stoneGroups = new ArrayList<StoneGroup>();
+        stoneGroups = new ArrayList<>();
         for (Stone stone : getStones()) {
             if (!stoneGroups.contains(stone.getStoneGroup())) {
                 stoneGroups.add(stone.getStoneGroup());
